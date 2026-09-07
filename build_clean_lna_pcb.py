@@ -466,8 +466,57 @@ def build_pcb():
     add_text('BAT+', 13.54, 1.0, 0.85, 0.15)
     add_text('GND-', 8.5, 1.0, 0.85, 0.15)
 
+    # Component Reference Designators on F.SilkS (Optimized for 0 DRC violations):
+    silk_map = {
+        # 1. RF Input & Pre-Filter BPF
+        'C2':  (5.2, 18.5, 0.80, 0.13),    # Shunt 27pF
+        'L1':  (9.8, 17.5, 0.80, 0.13),    # Shunt 22nH
+        'C1':  (11.5, 14.3, 0.80, 0.13),   # Series 91pF
+
+        # 2. Active Stage Q1 & Emitter Choke / Bias
+        'Q1':  (19.0, 16.8, 0.80, 0.13),   # MMBT5179 (SOT-23)
+        'L2':  (16.0, 20.0, 0.80, 0.13),   # Emitter RFC 470nH
+        'R3':  (16.0, 24.5, 0.80, 0.13),   # Emitter Resistor 200R
+
+        # 3. Base Bias & Triple Bypass Caps
+        'C3':  (17.8, 10.5, 0.80, 0.13),   # Base bypass 100pF
+        'C4':  (13.5, 12.8, 0.80, 0.13),   # Base bypass 1nF
+        'C5':  (11.0, 12.8, 0.80, 0.13),   # Base bypass 100nF
+        'R2':  (8.5, 12.8, 0.80, 0.13),    # Base bias 3.3k
+        'R1':  (4.8, 8.5, 0.80, 0.13),     # Base bias 3.9k
+
+        # 4. Collector Tuned Tank & Output Match
+        'L3':  (22.4, 10.0, 0.80, 0.13),   # Collector Inductor 150nH
+        'C6':  (22.5, 18.5, 0.80, 0.13),   # Shunt Tank Cap 6.8pF
+        'C7':  (25.5, 17.2, 0.80, 0.13),   # Series Match / DC Block 10pF
+
+        # 5. Bias Tee Section
+        'L4':  (34.6, 10.0, 0.80, 0.13),   # Bias Tee Choke 1uH
+        'C9':  (39.0, 11.5, 0.80, 0.13),   # Bias Tee 100pF
+        'C10': (39.5, 6.0, 0.80, 0.13),    # Bias Tee 10nF
+        'D2':  (36.0, 7.8, 0.80, 0.13),    # Bias Tee BAT54
+        'JP1': (33.0, 1.8, 0.80, 0.13),    # Solder Jumper
+
+        # 6. Power Decoupling & LED
+        'D1':  (18.5, 5.2, 0.80, 0.13),    # Battery Diode BAT54
+        'C11': (22.4, 7.5, 0.80, 0.13),    # 10uF
+        'C12': (26.8, 4.8, 0.80, 0.13),    # 100nF
+        'R4':  (31.2, 6.0, 0.80, 0.13),    # LED Resistor 2.2k
+        'D3':  (31.8, 9.5, 0.80, 0.13),    # Power LED
+    }
+
+    for ref_name, (sx, sy, sz, sth) in silk_map.items():
+        fp_item = board.FindFootprintByReference(ref_name)
+        if fp_item:
+            rf = fp_item.Reference()
+            rf.SetVisible(True)
+            rf.SetPosition(pcbnew.VECTOR2I(mm(sx), mm(sy)))
+            rf.SetTextSize(pcbnew.VECTOR2I(mm(sz), mm(sz)))
+            rf.SetTextThickness(mm(sth))
+            rf.SetLayer(pcbnew.F_SilkS)
+
     board.Save('lna_fm_98mhz.kicad_pcb')
-    print('Clean PCB successfully built and saved!')
+    print('Clean PCB successfully built and saved with component silkscreen!')
 
 if __name__ == '__main__':
     build_pcb()
