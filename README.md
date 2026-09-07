@@ -111,6 +111,7 @@ This repository serves as a real-world demonstration of **pure programmatic agen
 lna-ai/
 ├── README.md                   # Project documentation & user guide
 ├── AGENT.md                    # Engineering manual & autonomous AI agent blueprint
+├── PRE_FILTER_COMPARISON.md    # Pre-filter BPF vs. baseline performance comparison report
 ├── requirements.txt            # Python dependencies (pypdfium2, Pillow, numpy)
 │
 ├── lna_fm_98mhz.kicad_pro      # KiCad project file
