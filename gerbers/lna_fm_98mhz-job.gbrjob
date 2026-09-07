@@ -5,7 +5,7 @@
       "Application": "Pcbnew",
       "Version": "10.0.6"
     },
-    "CreationDate": "2026-09-07T23:22:54+05:30"
+    "CreationDate": "2026-09-08T01:02:30+05:30"
   },
   "GeneralSpecs": {
     "ProjectId": {
@@ -44,16 +44,6 @@
       "FilePolarity": "Positive"
     },
     {
-      "Path": "lna_fm_98mhz-F_Adhesive.gta",
-      "FileFunction": "Glue,Top",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-B_Adhesive.gba",
-      "FileFunction": "Glue,Bot",
-      "FilePolarity": "Positive"
-    },
-    {
       "Path": "lna_fm_98mhz-F_Paste.gtp",
       "FileFunction": "SolderPaste,Top",
       "FilePolarity": "Positive"
@@ -84,58 +74,8 @@
       "FilePolarity": "Negative"
     },
     {
-      "Path": "lna_fm_98mhz-User_Drawings.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-User_Comments.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-User_Eco1.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-User_Eco2.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
       "Path": "lna_fm_98mhz-Edge_Cuts.gm1",
       "FileFunction": "Profile",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-F_Fab.gbr",
-      "FileFunction": "AssemblyDrawing,Top",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-B_Fab.gbr",
-      "FileFunction": "AssemblyDrawing,Bot",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-User_1.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-User_2.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-User_3.gbr",
-      "FileFunction": "Other,User",
-      "FilePolarity": "Positive"
-    },
-    {
-      "Path": "lna_fm_98mhz-User_4.gbr",
-      "FileFunction": "Other,User",
       "FilePolarity": "Positive"
     }
   ],
