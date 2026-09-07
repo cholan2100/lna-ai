@@ -6,7 +6,7 @@
 
 ## 1. Executive Summary
 
-This report evaluates the **two-port stability** of the 98 MHz Common-Base Low Noise Amplifier (BFR93A with integrated pre-filter LC tank $L_1 = 22\text{ nH}, C_2 = 27\text{ pF}, C_1 = 91\text{ pF}$ and coplanar waveguide interconnects) across the 70–130 MHz frequency range.
+This report evaluates the **two-port stability** of the 98 MHz Common-Base Low Noise Amplifier (MMBT5179 with integrated pre-filter LC tank $L_1 = 22\text{ nH}, C_2 = 27\text{ pF}, C_1 = 91\text{ pF}$ and coplanar waveguide interconnects) across the 70–130 MHz frequency range.
 
 - **Rollett Factor $K$:** $0.278 < 1$ (**Conditionally Stable**)
 - **Edwards-Sinsky Geometric Factor $\mu$:** $0.772 < 1$

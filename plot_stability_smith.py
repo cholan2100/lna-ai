@@ -96,7 +96,7 @@ svg.append('</defs>')
 svg.append(f'''
 <rect x="0" y="0" width="{width}" height="100" fill="#181825" stroke="#313244" stroke-width="1" />
 <text x="{width//2}" y="38" text-anchor="middle" fill="#cdd6f4" font-size="24" font-weight="bold" letter-spacing="0.5">Common-Base FM LNA (98 MHz) — Stability Smith Chart Analysis</text>
-<text x="{width//2}" y="65" text-anchor="middle" fill="#a6adc8" font-size="14">BFR93A Common-Base Stage with Integrated Pre-Filter (L1=22nH, C2=27pF, C1=91pF) &amp; CPWG Interconnects</text>
+<text x="{width//2}" y="65" text-anchor="middle" fill="#a6adc8" font-size="14">MMBT5179 Common-Base Stage with Integrated Pre-Filter (L1=22nH, C2=27pF, C1=91pF) &amp; CPWG Interconnects</text>
 <text x="{width//2}" y="85" text-anchor="middle" fill="#89b4fa" font-size="12" font-weight="500">2-Port S-Parameter Analysis from 70 MHz to 130 MHz (QUCS/Qucsator Engine)</text>
 ''')
 
