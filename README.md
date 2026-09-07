@@ -213,21 +213,21 @@ python run_qucs_simulation.py
 **Sample Output:**
 ```
 ==========================================================================================
- QUCS Simulation with CPWG Traces (Z0=50 Ohm, W=1.5mm, S=0.35mm, L_in=8.5mm, L_out=19.55mm)
+ Model: CPWG Transmission Lines (Physical PCB Microstrip/CPWG on 1.6mm FR-4)
 ==========================================================================================
-Freq (MHz) |  S21 Gain (dB) |  S11 Match (dB) |  S22 Out (dB) |  S12 Iso (dB) |  K-factor |      Zin (Ohm)
------------+----------------+-----------------+---------------+---------------+-----------+---------------
-      88.0 |         +17.51 |           -9.76 |        -10.74 |        -18.01 |      1.22 |    42.6 - j31.6
-      90.0 |         +18.73 |          -11.83 |        -11.82 |        -18.99 |      1.24 |    43.8 - j24.3
-      92.0 |         +19.68 |          -14.73 |        -13.06 |        -19.78 |      1.25 |    45.5 - j17.2
-      94.0 |         +20.25 |          -19.16 |        -14.39 |        -20.26 |      1.26 |    47.5 - j10.7
-      96.0 |         +20.44 |          -26.79 |        -15.58 |        -20.45 |      1.27 |    49.6 - j5.1
-      98.0 |         +20.37 |          -34.72 |        -16.12 |        -20.42 |      1.28 |    50.8 - j1.8 <-- CENTER
-     100.0 |         +20.00 |          -25.04 |        -15.65 |        -20.15 |      1.28 |    50.9 + j4.5
-     102.0 |         +19.38 |          -19.10 |        -14.47 |        -19.66 |      1.28 |    50.0 + j9.7
-     104.0 |         +18.51 |          -15.39 |        -13.04 |        -18.99 |      1.28 |    48.5 + j14.1
-     106.0 |         +17.43 |          -12.78 |        -11.64 |        -18.15 |      1.27 |    46.6 + j17.7
-     108.0 |         +16.19 |          -10.78 |        -10.37 |        -17.18 |      1.26 |    44.6 + j20.6
+Freq (MHz) |  S21 Gain (dB) | S11 Match (dB) | S22 Out (dB) | S12 Iso (dB) |  K-factor |      Zin (Ohm)
+-----------+----------------+----------------+--------------+--------------+-----------+---------------
+      88.0 |         +14.81 |          -5.77 |        +0.28 |       -35.47 |      0.30 |   25.9 + j35.9
+      90.0 |         +16.70 |          -7.86 |        +0.28 |       -33.40 |      0.29 |   36.1 + j34.9
+      92.0 |         +18.31 |         -11.14 |        +0.20 |       -31.60 |      0.29 |   46.8 + j27.7
+      94.0 |         +19.45 |         -16.79 |        +0.01 |       -30.28 |      0.28 |   51.6 + j14.8
+      96.0 |         +19.97 |         -27.85 |        -0.27 |       -29.58 |      0.28 |    48.4 + j3.7
+      98.0 |         +19.88 |         -22.27 |        -0.53 |       -29.49 |      0.28 |    43.1 - j1.9 <-- CENTER
+     100.0 |         +19.37 |         -17.65 |        -0.70 |       -29.84 |      0.28 |    39.2 - j4.6
+     102.0 |         +18.61 |         -15.35 |        -0.76 |       -30.43 |      0.28 |    36.7 - j6.5
+     104.0 |         +17.75 |         -13.67 |        -0.75 |       -31.12 |      0.28 |    34.6 - j8.5
+     106.0 |         +16.87 |         -12.18 |        -0.71 |       -31.84 |      0.28 |   32.4 - j10.5
+     108.0 |         +16.00 |         -10.82 |        -0.64 |       -32.55 |      0.28 |   30.1 - j12.1
 ```
 
 Touchstone file exported: `lna_fm_98mhz_cpwg.s2p`
@@ -287,11 +287,12 @@ Generated files in `renders/`:
 | Ref | Value | Footprint | Description | Recommended Part |
 | :--- | :--- | :--- | :--- | :--- |
 | **Q1** | MMBT5179 | SOT-23-3 | VHF/UHF NPN RF BJT ($f_T = 1.4\text{ GHz}$) | ON Semi / Central Semi MMBT5179 |
-| **L1** | 27 nH | 0805 SMD | RF Input shunt matching inductor (High Q) | Murata LQW2BAN27NJ00L |
-| **L2** | 470 nH | 0805 SMD | Emitter DC bias return RF choke | Coilcraft 0805CS-471XGL |
-| **L3** | 150 nH | 0805 SMD | Collector resonant tank tuning inductor | Murata LQW2BANR15J00L |
-| **L4** | 1.0 $\mu$H | 0805 SMD | Bias-Tee DC feed RF choke | Coilcraft 0805LS-102XGL |
-| **C1** | 100 pF | 0805 SMD | Input DC block & matching capacitor (NP0/C0G) | KEMET C0805C101J5GACTU |
+| **L1** | 18 nH | 0603 SMD | RF Input shunt tank inductor (High-Q wirewound) | Murata LQW18AN18NG00D |
+| **C2** | 47 pF | 0603 SMD | RF Input shunt tank capacitor (Pre-filter C0G) | KEMET C0603C470J5GACTU |
+| **C1** | 100 pF | 0805 SMD | Input series match & DC block capacitor (C0G) | KEMET C0805C101J5GACTU |
+| **L2** | 470 nH | 0603 SMD | Emitter DC bias return RF choke | Coilcraft 0603CS-R47XJLU |
+| **L3** | 150 nH | 0603 SMD | Collector resonant tank tuning inductor | Murata LQW18ANR15J00D |
+| **L4** | 1.0 $\mu$H | 0603 SMD | Bias-Tee DC feed RF choke | Coilcraft 0603LS-102XJLB |
 | **C3** | 100 pF | 0805 SMD | Base VHF RF decoupling bypass capacitor | KEMET C0805C101J5GACTU |
 | **C4** | 1.0 nF | 0805 SMD | Base mid-band decoupling capacitor | KEMET C0805C102J5GACTU |
 | **C5** | 100 nF | 0805 SMD | Base low-frequency bypass capacitor (X7R) | KEMET C0805C104K5RACTU |
@@ -301,17 +302,17 @@ Generated files in `renders/`:
 | **C10**| 10 nF | 0805 SMD | Bias-Tee mid-band decoupling capacitor | KEMET C0805C103K5RACTU |
 | **C11**| 10 $\mu$F | 0805 SMD | VCC bulk decoupling capacitor (X5R/X7R, 10V) | Murata GRM21BR61A106KE19L |
 | **C12**| 100 nF | 0805 SMD | VCC high-frequency bypass capacitor | KEMET C0805C104K5RACTU |
-| **R1** | 3.9 k$\Omega$| 0805 SMD | Upper base bias divider resistor (1%) | Yageo RC0805FR-073K9L |
-| **R2** | 3.3 k$\Omega$| 0805 SMD | Lower base bias divider resistor (1%) | Yageo RC0805FR-073K3L |
-| **R3** | 200 $\Omega$ | 0805 SMD | Emitter degeneration & DC bias resistor (1%) | Yageo RC0805FR-07200RL |
-| **Rbt**| 100 k$\Omega$| 0805 SMD | Bias-Tee bleed & static discharge resistor | Yageo RC0805FR-07100KL |
-| **R4** | 1.0 k$\Omega$| 0805 SMD | Power indicator LED current limiting resistor | Yageo RC0805FR-071KL |
-| **D2** | Green | 0805 SMD | Power indicator LED | Lite-On LTST-C170KGKT |
-| **D3** | BAT54 | SOT-23-3 | Reverse polarity protection Schottky diode | Diodes Inc. BAT54 |
-| **J1** | Jumper | Solder Pad | Bias-Tee isolation solder bridge | Standard PCB 2-pad jumper |
-| **J2** | Conn_01x02 | 2.54mm Pin | External DC / Battery header | 2-pin 0.1" header or wire pads |
-| **J_IN**| SMA Jack | Edge-Mount | 50 $\Omega$ RF Input Connector (1.6mm board edge) | Samtec SMA-J-P-H-ST-EM1 |
-| **J_OUT**| SMA Jack| Edge-Mount | 50 $\Omega$ RF Output Connector (1.6mm board edge)| Samtec SMA-J-P-H-ST-EM1 |
+| **R1** | 3.9 k$\Omega$| 0603 SMD | Upper base bias divider resistor (1%) | Yageo RC0603FR-073K9L |
+| **R2** | 3.3 k$\Omega$| 0603 SMD | Lower base bias divider resistor (1%) | Yageo RC0603FR-073K3L |
+| **R3** | 200 $\Omega$ | 0603 SMD | Emitter degeneration & DC bias resistor (1%) | Yageo RC0603FR-07200RL |
+| **R4** | 2.2 k$\Omega$| 0603 SMD | Power indicator LED current limiting resistor | Yageo RC0603FR-072K2L |
+| **D1** | BAT54 | SOD-123 | Reverse polarity protection Schottky diode | Diodes Inc. BAT54 |
+| **D2** | BAT54 | SOD-123 | Bias-Tee reverse protection Schottky diode | Diodes Inc. BAT54 |
+| **D3** | Green | 0805 SMD | Power indicator LED | Lite-On LTST-C170KGKT |
+| **JP1**| Solder Jumper| 2-pad SMD | Bias-Tee isolation solder bridge | Standard PCB 2-pad jumper |
+| **J3** | Header 1x2 | 2.54mm Pin | External DC / Battery solder pads | 2-pin 0.1" header / wire pads |
+| **J1** | SMA Jack | Edge-Mount | 50 $\Omega$ RF Input Connector (1.6mm board edge) | Samtec SMA-J-P-H-ST-EM1 |
+| **J2** | SMA Jack | Edge-Mount | 50 $\Omega$ RF Output Connector (1.6mm board edge)| Samtec SMA-J-P-H-ST-EM1 |
 
 ---
 

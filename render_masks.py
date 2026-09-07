@@ -114,6 +114,43 @@ def render_and_crop(pdf_name, png_name, is_dark_bg=False, scale=12, pad=60):
     padded.save(out_png)
     print(f"Generated {png_name} ({padded.size[0]}x{padded.size[1]} px)")
 
+def export_schematic_renders():
+    """Export vector and high-resolution cropped raster renders of KiCad schematic."""
+    sch_path = Path(__file__).resolve().parent / "lna_fm_98mhz.kicad_sch"
+    out_pdf = RENDERS_DIR / "schematic.pdf"
+    clean_pdf = RENDERS_DIR / "schematic_clean.pdf"
+
+    # Full schematic PDF with title sheet
+    subprocess.run([KICAD_CLI, "sch", "export", "pdf", "-o", str(out_pdf), str(sch_path)], check=True)
+    # Full schematic SVG
+    subprocess.run([KICAD_CLI, "sch", "export", "svg", "-o", str(RENDERS_DIR), str(sch_path)], check=True)
+    gen_svg = RENDERS_DIR / "lna_fm_98mhz.svg"
+    if gen_svg.exists():
+        import shutil
+        shutil.move(str(gen_svg), str(RENDERS_DIR / "schematic.svg"))
+
+    # Clean schematic PDF without sheet border for cropped zoom
+    subprocess.run([KICAD_CLI, "sch", "export", "pdf", "-e", "-o", str(clean_pdf), str(sch_path)], check=True)
+    doc = pdfium.PdfDocument(str(clean_pdf))
+    page = doc[0]
+    img = page.render(scale=5).to_pil()
+    arr = np.array(img)
+    bg_color = arr[0, 0]
+    diff = np.abs(arr.astype(int) - bg_color.astype(int))
+    mask = np.any(diff > 15, axis=-1)
+    y_idx, x_idx = np.where(mask)
+    cropped = img.crop((x_idx.min(), y_idx.min(), x_idx.max() + 1, y_idx.max() + 1))
+    padded = ImageOps.expand(cropped, border=60, fill=tuple(bg_color[:3]))
+    out_png = RENDERS_DIR / "schematic_zoomed.png"
+    padded.save(out_png)
+    print(f"Generated schematic_zoomed.png ({padded.size[0]}x{padded.size[1]} px)")
+    doc.close()
+    if clean_pdf.exists():
+        try:
+            clean_pdf.unlink()
+        except OSError:
+            pass
+
 def main():
     print("=== Starting 2D Artwork & Mask Generation ===")
     export_pdfs()
@@ -125,8 +162,13 @@ def main():
     render_and_crop("top_copper_mask_neg.pdf", "top_copper_mask_neg.png", is_dark_bg=True)
     render_and_crop("top_solder_mask.pdf", "top_solder_mask.png", is_dark_bg=False)
     render_and_crop("top_composite_2d.pdf", "top_composite_2d.png", is_dark_bg=False)
+
+    print("\n=== Exporting Schematic Vector & Zoomed Artwork ===")
+    export_schematic_renders()
+
     print("\nAll renders generated successfully in 'renders/' directory.")
 
 if __name__ == "__main__":
     main()
+
 

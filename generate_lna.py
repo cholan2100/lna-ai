@@ -161,31 +161,39 @@ def build_schematic(output_path: Path):
 \t\t)
 \t)''')
 
-    # 1. RF INPUT SECTION (High-Pass L-Match: Shunt Inductor L1 + Series Capacitor C1)
+    # 1. RF INPUT SECTION (Merged BPF & Match: Shunt LC Tank L1 || C2 + Series Capacitor C1)
     # J1 at (35.56, 60.96): Pin 1 (30.48, 60.96), Pin 2 (35.56, 66.04)
     add_comp('J1', 'SMA_50R_IN', 'Connector:Conn_Coaxial', 'Connector_Coaxial:SMA_Samtec_SMA-J-P-H-ST-EM1_EdgeMount', 35.56, 60.96, 0, 2)
     add_wire(35.56, 66.04, 35.56, 68.58)
     add_pwr('power:GND', 35.56, 68.58)
 
-    # Wire from J1 to L-match junction at (45.72, 60.96)
+    # Wire from J1 to L1 tank junction at (45.72, 60.96)
     add_wire(30.48, 60.96, 45.72, 60.96)
     add_label('RF_IN_50R', 33.02, 60.96)
     add_junction(45.72, 60.96)
 
-    # L1 (27nH shunt match to GND, 0603 wirewound) at (45.72, 68.58), angle 180:
+    # L1 (18nH shunt tank inductor to GND, 0603 wirewound) at (45.72, 68.58), angle 180:
     # Pin 1 at (45.72, 64.77), Pin 2 at (45.72, 72.39)
-    add_comp('L1', '27nH', 'Device:L', 'Inductor_SMD:L_0603_1608Metric', 45.72, 68.58, 180, 2)
+    add_comp('L1', '18nH', 'Device:L', 'Inductor_SMD:L_0603_1608Metric', 45.72, 68.58, 180, 2)
     add_wire(45.72, 60.96, 45.72, 64.77)
     add_wire(45.72, 72.39, 45.72, 74.93)
     add_pwr('power:GND', 45.72, 74.93)
 
-    # C1 (100pF series match & DC block, 0805) at (58.42, 60.96), angle 90:
-    # Pin 1 at (54.61, 60.96), Pin 2 at (62.23, 60.96)
-    add_comp('C1', '100pF', 'Device:C', 'Capacitor_SMD:C_0805_2012Metric', 58.42, 60.96, 90, 2)
-    add_wire(45.72, 60.96, 54.61, 60.96)
+    # C2 (47pF shunt tank capacitor to GND, 0603 C0G) at (53.34, 68.58), angle 180:
+    # Pin 1 at (53.34, 64.77), Pin 2 at (53.34, 72.39)
+    add_wire(45.72, 60.96, 53.34, 60.96)
+    add_junction(53.34, 60.96)
+    add_comp('C2', '47pF', 'Device:C', 'Capacitor_SMD:C_0603_1608Metric', 53.34, 68.58, 180, 2)
+    add_wire(53.34, 60.96, 53.34, 64.77)
+    add_wire(53.34, 72.39, 53.34, 74.93)
+    add_pwr('power:GND', 53.34, 74.93)
 
+    # C1 (100pF series match & DC block, 0805) at (63.50, 60.96), angle 90:
+    # Pin 1 at (59.69, 60.96), Pin 2 at (67.31, 60.96)
+    add_wire(53.34, 60.96, 59.69, 60.96)
+    add_comp('C1', '100pF', 'Device:C', 'Capacitor_SMD:C_0805_2012Metric', 63.50, 60.96, 90, 2)
     # Wire from C1 Pin 2 to Emitter Node
-    add_wire(62.23, 60.96, 76.20, 60.96)
+    add_wire(67.31, 60.96, 76.20, 60.96)
     add_junction(76.20, 60.96)
     add_label('EMITTER', 76.20, 60.96)
 

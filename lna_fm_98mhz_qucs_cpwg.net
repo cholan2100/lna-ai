@@ -9,8 +9,9 @@ Pac:P2 rf_out gnd Num=2 Z=50 Ohm f=98 MHz
 # Input CPWG trace from SMA J1 (X=0.0) to L1 tap (X=8.5mm): Length = 8.5 mm
 CLIN:TL_IN rf_in in Subst="Subst1" W=1.5mm S=0.35mm L=8.5mm Backside="Metal"
 
-# Input High-Pass L-Match Network: Shunt L1 to GND, Series C1 to Emitter
-L:L1 in gnd L=27n
+# Input BPF & Matching Network: Shunt LC Tank (L1 || C2 to GND) + Series C1 to Emitter
+L:L1 in gnd L=18n
+C:C2 in gnd C=47p
 C:C1 in emitter C=100p
 
 # Transistor Q1 MMBT5179 (Base, Collector, Emitter, Substrate)

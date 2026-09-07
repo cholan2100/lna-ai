@@ -118,10 +118,16 @@ def build_pcb():
     set_net(d1, 1, 'VCC')
     set_net(d1, 2, '/BAT_IN')
 
-    # 5. RF Input Matching Section (High-Pass L-Match: Shunt L1 to GND + Series C1 to Emitter):
-    # L1 Shunt Match (27nH, 0603 wirewound) at (8.5, 17.5), angle 270:
+    # 5. RF Input Matching Section (Merged LC BPF & Match: Shunt L1 || C2 to GND + Series C1 to Emitter):
+    # C2 Shunt Tank Cap (47pF, 0603 C0G) at (6.5, 17.5), angle 270:
     # Pad 1 (Top, 16.7125) connects to 50R line, Pad 2 (Bottom, 18.2875) connects to GND via
-    l1 = place_fp('Inductor_SMD', 'L_0603_1608Metric', 'L1', '27nH', 8.5, 17.5, 270)
+    c2 = place_fp('Capacitor_SMD', 'C_0603_1608Metric', 'C2', '47pF', 6.5, 17.5, 270)
+    set_net(c2, 1, '/RF_IN_50R')
+    set_net(c2, 2, 'GND')
+
+    # L1 Shunt Match Inductor (18nH, 0603 wirewound) at (8.5, 17.5), angle 270:
+    # Pad 1 (Top, 16.7125) connects to 50R line, Pad 2 (Bottom, 18.2875) connects to GND via
+    l1 = place_fp('Inductor_SMD', 'L_0603_1608Metric', 'L1', '18nH', 8.5, 17.5, 270)
     set_net(l1, 1, '/RF_IN_50R')
     set_net(l1, 2, 'GND')
 
@@ -238,11 +244,15 @@ def build_pcb():
     # =========================================================================
     # 1. /RF_IN_50R (CPWG 50R, width 1.5mm from SMA J1 up to L-match tap at X=8.5mm)
     p_j1_1 = pad_pos(j1, 1)
+    p_c2_1 = pad_pos(c2, 1)
     p_l1_1 = pad_pos(l1, 1)
     p_c1_1 = pad_pos(c1, 1)
 
     # Continuous 50-ohm CPWG line from SMA J1 to L-match tap
     add_seg(p_j1_1[0], 15.0, 8.5, 15.0, 1.5, '/RF_IN_50R')
+
+    # Vertical tap from 50R line down to C2 pad 1
+    add_seg(6.5, 15.0, p_c2_1[0], p_c2_1[1], 0.6, '/RF_IN_50R')
 
     # Vertical tap from 50R line down to L1 pad 1
     add_seg(8.5, 15.0, p_l1_1[0], p_l1_1[1], 0.6, '/RF_IN_50R')
@@ -359,6 +369,7 @@ def build_pcb():
 
     # J3 GND via placed at (8.5, 3.5) well clear of VCC and H1
     connect_gnd(j3, 2, 8.5, 3.5)
+    connect_gnd(c2, 2, 6.5, 20.0)
     connect_gnd(l1, 2, 8.5, 20.5)
     connect_gnd(r3, 2, 14.675, 27.0)
     connect_gnd(c3, 2, 16.062, 7.8)
@@ -376,7 +387,7 @@ def build_pcb():
     rf_fence = [
         # --- 1. RF Input CPWG Fencing (J1 to Q1 Emitter) ---
         (2.0, 12.5), (4.5, 12.5), (7.0, 12.5), (9.5, 12.5), (12.0, 12.5),
-        (2.0, 17.5), (4.5, 17.5), (6.5, 17.5), (11.5, 18.5),
+        (2.0, 17.5), (4.5, 17.5), (11.5, 18.5),
 
         # --- 2. Q1 Transistor & Collector Terminal Shielding ---
         # Immediate flanking vias isolating Collector from Base & Emitter
@@ -450,7 +461,7 @@ def build_pcb():
     add_text('98MHz FM LNA', 23.0, 26.2, 1.2, 0.18)
     add_text('MMBT5179 (CB)', 23.0, 28.0, 0.9, 0.15)
     add_text('BIAS-TEE ENABLED', 23.0, 24.5, 0.85, 0.15)
-    add_text('IN 50R', 6.0, 21.0, 0.85, 0.15)
+    add_text('IN 50R', 5.0, 23.5, 0.85, 0.15)
     add_text('OUT 50R', 40.0, 21.0, 0.85, 0.15)
     add_text('BAT+', 13.54, 1.0, 0.85, 0.15)
     add_text('GND-', 8.5, 1.0, 0.85, 0.15)
