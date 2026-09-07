@@ -108,13 +108,14 @@ def build_pcb():
             p.SetNet(get_net('GND'))
             p.SetLocalZoneConnection(pcbnew.ZONE_CONNECTION_FULL)
 
-    # J3: Battery / DC power solder pads at (20.0, 3.5), angle 90: Pad 1 (BAT+) at 18.73, Pad 2 (GND) at 21.27
-    j3 = place_fp('Connector_PinHeader_2.54mm', 'PinHeader_1x02_P2.54mm_Vertical', 'J3', 'BAT_PADS', 20.0, 3.5, 90)
+    # J3: Battery / DC power solder pads at (19.0, 3.5), angle 90: Pad 1 (BAT+) at 17.73, Pad 2 (GND) at 20.27
+    # Centered in the 15mm-23mm OpenSourceSDRLab USB port opening
+    j3 = place_fp('Connector_PinHeader_2.54mm', 'PinHeader_1x02_P2.54mm_Vertical', 'J3', 'BAT_PADS', 19.0, 3.5, 90)
     set_net(j3, 1, '/BAT_IN')
     set_net(j3, 2, 'GND')
 
-    # D1: BAT54 Battery Protection Diode at (15.0, 3.5), angle 0: Pad 1 (Cathode, VCC) at 13.35, Pad 2 (Anode, /BAT_IN) at 16.65
-    d1 = place_fp('Diode_SMD', 'D_SOD-123', 'D1', 'BAT54', 15.0, 3.5, 0)
+    # D1: BAT54 Battery Protection Diode at (14.5, 3.5), angle 0: Pad 1 (Cathode, VCC) at 12.85, Pad 2 (Anode, /BAT_IN) at 16.15
+    d1 = place_fp('Diode_SMD', 'D_SOD-123', 'D1', 'BAT54', 14.5, 3.5, 0)
     set_net(d1, 1, 'VCC')
     set_net(d1, 2, '/BAT_IN')
 
@@ -461,10 +462,10 @@ def build_pcb():
     add_text('BIAS-TEE ENABLED', 23.0, 24.5, 0.85, 0.15)
     add_text('IN 50R', 5.0, 23.5, 0.85, 0.15)
     add_text('OUT 50R', 40.0, 21.0, 0.85, 0.15)
-    add_text('+', 18.73, 1.2, 0.80, 0.13)
-    add_text('-', 21.27, 1.2, 0.80, 0.13)
-    add_text('BAT', 18.73, 5.9, 0.80, 0.13)
-    add_text('GND', 21.27, 5.9, 0.80, 0.13)
+    add_text('+', 17.73, 1.2, 0.80, 0.13)
+    add_text('-', 20.27, 1.2, 0.80, 0.13)
+    add_text('BAT', 17.73, 5.9, 0.80, 0.13)
+    add_text('GND', 20.27, 5.9, 0.80, 0.13)
 
     # Component Reference Designators on F.SilkS (Optimized for 0 DRC violations):
     silk_map = {
@@ -498,7 +499,7 @@ def build_pcb():
         'JP1': (33.0, 1.8, 0.80, 0.13),    # Solder Jumper
 
         # 6. Power Decoupling & LED
-        'D1':  (15.0, 1.8, 0.80, 0.13),    # Battery Diode BAT54 (above D1)
+        'D1':  (14.5, 1.8, 0.80, 0.13),    # Battery Diode BAT54 (above D1)
         'C11': (22.2, 7.5, 0.80, 0.13),    # 10uF
         'C12': (28.8, 7.5, 0.80, 0.13),    # 100nF
         'R4':  (8.5, 5.0, 0.80, 0.13),     # LED Resistor 2.2k (left of R4)
