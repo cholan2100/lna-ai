@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv
+env/
+venv/
+
+# KiCad temporary & user-local files
+*.kicad_prl
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*-bak
+*.bak
+~*.lck
+*.tmp
+
+# Editor & IDE settings
+.vscode/
+.idea/
+*.swp
+*~

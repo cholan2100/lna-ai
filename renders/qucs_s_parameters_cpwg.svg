@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%" style="background:#1e1e2e; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;">
+<text x="400" y="30" text-anchor="middle" fill="#cdd6f4" font-size="18" font-weight="bold">Common-Base 98 MHz FM LNA ? QUCS S-Parameters with CPWG Lines</text>
+<text x="400" y="48" text-anchor="middle" fill="#a6adc8" font-size="12">Coplanar Waveguide Models: 1.6mm FR-4, W=1.5mm, S=0.35mm (Z0 = 50 Ohm CPWG)</text>
+<rect x="277.0" y="60" width="230.0" height="380" fill="#a6e3a1" fill-opacity="0.08" stroke="#a6e3a1" stroke-dasharray="4,4" stroke-width="1"/>
+<text x="392.0" y="80" text-anchor="middle" fill="#a6e3a1" font-size="12" font-weight="600">FM Broadcast Band (88?108 MHz)</text>
+<line x1="70.0" y1="60" x2="70.0" y2="440" stroke="#313244" stroke-width="1"/>
+<text x="70.0" y="460" text-anchor="middle" fill="#a6adc8" font-size="12">70 MHz</text>
+<line x1="185.0" y1="60" x2="185.0" y2="440" stroke="#313244" stroke-width="1"/>
+<text x="185.0" y="460" text-anchor="middle" fill="#a6adc8" font-size="12">80 MHz</text>
+<line x1="300.0" y1="60" x2="300.0" y2="440" stroke="#313244" stroke-width="1"/>
+<text x="300.0" y="460" text-anchor="middle" fill="#a6adc8" font-size="12">90 MHz</text>
+<line x1="415.0" y1="60" x2="415.0" y2="440" stroke="#313244" stroke-width="1"/>
+<text x="415.0" y="460" text-anchor="middle" fill="#a6adc8" font-size="12">100 MHz</text>
+<line x1="530.0" y1="60" x2="530.0" y2="440" stroke="#313244" stroke-width="1"/>
+<text x="530.0" y="460" text-anchor="middle" fill="#a6adc8" font-size="12">110 MHz</text>
+<line x1="645.0" y1="60" x2="645.0" y2="440" stroke="#313244" stroke-width="1"/>
+<text x="645.0" y="460" text-anchor="middle" fill="#a6adc8" font-size="12">120 MHz</text>
+<line x1="760.0" y1="60" x2="760.0" y2="440" stroke="#313244" stroke-width="1"/>
+<text x="760.0" y="460" text-anchor="middle" fill="#a6adc8" font-size="12">130 MHz</text>
+<line x1="70" y1="412.8571428571429" x2="760" y2="412.8571428571429" stroke="#313244" stroke-width="1.0"/>
+<text x="60" y="416.8571428571429" text-anchor="end" fill="#a6adc8" font-size="12">-40 dB</text>
+<line x1="70" y1="358.57142857142856" x2="760" y2="358.57142857142856" stroke="#313244" stroke-width="1.0"/>
+<text x="60" y="362.57142857142856" text-anchor="end" fill="#a6adc8" font-size="12">-30 dB</text>
+<line x1="70" y1="304.28571428571433" x2="760" y2="304.28571428571433" stroke="#313244" stroke-width="1.0"/>
+<text x="60" y="308.28571428571433" text-anchor="end" fill="#a6adc8" font-size="12">-20 dB</text>
+<line x1="70" y1="250.0" x2="760" y2="250.0" stroke="#313244" stroke-width="1.0"/>
+<text x="60" y="254.0" text-anchor="end" fill="#a6adc8" font-size="12">-10 dB</text>
+<line x1="70" y1="195.71428571428572" x2="760" y2="195.71428571428572" stroke="#45475a" stroke-width="1.5"/>
+<text x="60" y="199.71428571428572" text-anchor="end" fill="#a6adc8" font-size="12">+0 dB</text>
+<line x1="70" y1="141.42857142857144" x2="760" y2="141.42857142857144" stroke="#313244" stroke-width="1.0"/>
+<text x="60" y="145.42857142857144" text-anchor="end" fill="#a6adc8" font-size="12">+10 dB</text>
+<line x1="70" y1="87.14285714285714" x2="760" y2="87.14285714285714" stroke="#313244" stroke-width="1.0"/>
+<text x="60" y="91.14285714285714" text-anchor="end" fill="#a6adc8" font-size="12">+20 dB</text>
+<rect x="70" y="60" width="690" height="380" fill="none" stroke="#45475a" stroke-width="1.5"/>
+<line x1="392.0" y1="60" x2="392.0" y2="440" stroke="#fab387" stroke-dasharray="3,3" stroke-width="1.5"/>
+<text x="392.0" y="430" text-anchor="middle" fill="#fab387" font-size="11">98.0 MHz</text>
+<path d="M 70.00,440.00 L 81.50,440.00 L 93.00,440.00 L 104.50,440.00 L 116.00,440.00 L 127.50,440.00 L 139.00,440.00 L 150.50,440.00 L 162.00,437.04 L 173.50,431.77 L 185.00,426.49 L 196.50,421.20 L 208.00,415.91 L 219.50,410.60 L 231.00,405.30 L 242.50,400.00 L 254.00,394.73 L 265.50,389.51 L 277.00,384.37 L 288.50,379.37 L 300.00,374.59 L 311.50,370.11 L 323.00,366.05 L 334.50,362.53 L 346.00,359.68 L 357.50,357.58 L 369.00,356.27 L 380.50,355.72 L 392.00,355.86 L 403.50,356.56 L 415.00,357.69 L 426.50,359.13 L 438.00,360.77 L 449.50,362.53 L 461.00,364.36 L 472.50,366.20 L 484.00,368.02 L 495.50,369.81 L 507.00,371.55 L 518.50,373.23 L 530.00,374.86 L 541.50,376.42 L 553.00,377.92 L 564.50,379.35 L 576.00,380.73 L 587.50,382.05 L 599.00,383.31 L 610.50,384.52 L 622.00,385.68 L 633.50,386.79 L 645.00,387.86 L 656.50,388.88 L 668.00,389.85 L 679.50,390.79 L 691.00,391.69 L 702.50,392.55 L 714.00,393.37 L 725.50,394.17 L 737.00,394.93 L 748.50,395.66 L 760.00,396.36" fill="none" stroke="#89b4fa" stroke-width="2" stroke-dasharray="6,3"/>
+<path d="M 70.00,195.63 L 81.50,195.61 L 93.00,195.58 L 104.50,195.55 L 116.00,195.52 L 127.50,195.49 L 139.00,195.45 L 150.50,195.41 L 162.00,195.36 L 173.50,195.31 L 185.00,195.26 L 196.50,195.21 L 208.00,195.15 L 219.50,195.10 L 231.00,195.05 L 242.50,195.02 L 254.00,194.99 L 265.50,195.00 L 277.00,195.03 L 288.50,195.12 L 300.00,195.28 L 311.50,195.52 L 323.00,195.86 L 334.50,196.30 L 346.00,196.83 L 357.50,197.41 L 369.00,198.00 L 380.50,198.54 L 392.00,198.98 L 403.50,199.29 L 415.00,199.49 L 426.50,199.59 L 438.00,199.60 L 449.50,199.56 L 461.00,199.47 L 472.50,199.36 L 484.00,199.23 L 495.50,199.10 L 507.00,198.96 L 518.50,198.83 L 530.00,198.70 L 541.50,198.58 L 553.00,198.46 L 564.50,198.35 L 576.00,198.25 L 587.50,198.15 L 599.00,198.06 L 610.50,197.97 L 622.00,197.89 L 633.50,197.82 L 645.00,197.74 L 656.50,197.68 L 668.00,197.62 L 679.50,197.56 L 691.00,197.50 L 702.50,197.45 L 714.00,197.40 L 725.50,197.35 L 737.00,197.31 L 748.50,197.27 L 760.00,197.23" fill="none" stroke="#f38ba8" stroke-width="2" stroke-dasharray="4,2"/>
+<path d="M 70.00,203.59 L 81.50,204.37 L 93.00,205.22 L 104.50,206.16 L 116.00,207.19 L 127.50,208.32 L 139.00,209.58 L 150.50,210.96 L 162.00,212.49 L 173.50,214.18 L 185.00,216.06 L 196.50,218.15 L 208.00,220.49 L 219.50,223.12 L 231.00,226.09 L 242.50,229.48 L 254.00,233.37 L 265.50,237.89 L 277.00,243.22 L 288.50,249.60 L 300.00,257.41 L 311.50,267.21 L 323.00,279.96 L 334.50,297.55 L 346.00,324.78 L 357.50,385.04 L 369.00,368.60 L 380.50,327.56 L 392.00,309.23 L 403.50,298.60 L 415.00,291.78 L 426.50,287.05 L 438.00,283.51 L 449.50,280.57 L 461.00,277.91 L 472.50,275.34 L 484.00,272.75 L 495.50,270.14 L 507.00,267.51 L 518.50,264.89 L 530.00,262.32 L 541.50,259.82 L 553.00,257.40 L 564.50,255.09 L 576.00,252.89 L 587.50,250.81 L 599.00,248.84 L 610.50,246.98 L 622.00,245.23 L 633.50,243.58 L 645.00,242.03 L 656.50,240.56 L 668.00,239.19 L 679.50,237.89 L 691.00,236.67 L 702.50,235.52 L 714.00,234.43 L 725.50,233.41 L 737.00,232.44 L 748.50,231.52 L 760.00,230.65" fill="none" stroke="#f9e2af" stroke-width="2.5"/>
+<path d="M 70.00,195.71 L 81.50,191.10 L 93.00,186.49 L 104.50,181.87 L 116.00,177.24 L 127.50,172.60 L 139.00,167.95 L 150.50,163.29 L 162.00,158.61 L 173.50,153.91 L 185.00,149.20 L 196.50,144.48 L 208.00,139.74 L 219.50,134.98 L 231.00,130.22 L 242.50,125.46 L 254.00,120.72 L 265.50,116.02 L 277.00,111.41 L 288.50,106.93 L 300.00,102.65 L 311.50,98.68 L 323.00,95.11 L 334.50,92.09 L 346.00,89.73 L 357.50,88.12 L 369.00,87.29 L 380.50,87.22 L 392.00,87.82 L 403.50,88.99 L 415.00,90.58 L 426.50,92.48 L 438.00,94.58 L 449.50,96.79 L 461.00,99.06 L 472.50,101.34 L 484.00,103.60 L 495.50,105.82 L 507.00,107.99 L 518.50,110.10 L 530.00,112.14 L 541.50,114.13 L 553.00,116.04 L 564.50,117.89 L 576.00,119.67 L 587.50,121.40 L 599.00,123.06 L 610.50,124.67 L 622.00,126.23 L 633.50,127.73 L 645.00,129.18 L 656.50,130.59 L 668.00,131.95 L 679.50,133.26 L 691.00,134.54 L 702.50,135.77 L 714.00,136.97 L 725.50,138.13 L 737.00,139.26 L 748.50,140.35 L 760.00,141.41" fill="none" stroke="#a6e3a1" stroke-width="3"/>
+<circle cx="392.00" cy="87.82" r="5" fill="#a6e3a1" stroke="#1e1e2e" stroke-width="2"/>
+<rect x="400.00" y="63.82" width="140" height="22" rx="4" fill="#313244" stroke="#a6e3a1" stroke-width="1"/>
+<text x="406.00" y="78.82" fill="#a6e3a1" font-size="12" font-weight="bold">S21 = +19.87 dB</text>
+<circle cx="392.00" cy="309.23" r="5" fill="#f9e2af" stroke="#1e1e2e" stroke-width="2"/>
+<rect x="400.00" y="299.23" width="140" height="22" rx="4" fill="#313244" stroke="#f9e2af" stroke-width="1"/>
+<text x="406.00" y="314.23" fill="#f9e2af" font-size="12" font-weight="bold">S11 = -20.91 dB</text>
+<g transform="translate(85, 75)">
+<rect width="185" height="95" rx="6" fill="#181825" fill-opacity="0.9" stroke="#313244" stroke-width="1"/>
+<line x1="15" y1="20" x2="45" y2="20" stroke="#a6e3a1" stroke-width="3"/>
+<text x="55" y="24" fill="#cdd6f4" font-size="12" font-weight="bold">S21 Gain (+19.9 dB)</text>
+<line x1="15" y1="40" x2="45" y2="40" stroke="#f9e2af" stroke-width="2.5"/>
+<text x="55" y="44" fill="#cdd6f4" font-size="12" font-weight="bold">S11 Match (-20.9 dB)</text>
+<line x1="15" y1="60" x2="45" y2="60" stroke="#f38ba8" stroke-width="2" stroke-dasharray="4,2"/>
+<text x="55" y="64" fill="#cdd6f4" font-size="12">S22 Output (-0.6 dB)</text>
+<line x1="15" y1="80" x2="45" y2="80" stroke="#89b4fa" stroke-width="2" stroke-dasharray="6,3"/>
+<text x="55" y="84" fill="#cdd6f4" font-size="12">S12 Isol (-29.5 dB)</text>
+</g>
+</svg>

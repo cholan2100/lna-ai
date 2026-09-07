@@ -1,0 +1,5 @@
+# Python dependencies for simulation parsing, plotting, and KiCad rendering
+pypdfium2>=4.30.0
+Pillow>=10.0.0
+numpy>=1.26.0
+

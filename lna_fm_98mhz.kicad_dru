@@ -1,0 +1,6 @@
+(version 1)
+
+(rule "Edge connector edge clearance"
+	(constraint edge_clearance (min 0.0mm))
+	(condition "A.insideFootprint('J1') || A.insideFootprint('J2') || A.NetName == '/RF_IN_50R' || A.NetName == '/RF_OUT_50R'")
+)

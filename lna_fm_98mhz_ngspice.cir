@@ -1,0 +1,59 @@
+* 98 MHz Common Base LNA S-parameter Simulation
+.title MMBT5179 Common-Base LNA 98 MHz
+
+* Ports:
+* Input Port P1 (50 Ohm)
+V1 in_gen 0 dc 0 ac 1 portnum 1 z0 50
+Rin in_gen in 50
+
+* Input Matching (50 Ohm to Emitter)
+C1 in n_c1_2 100p
+C2 n_c1_2 0 47p
+L1 n_c1_2 emitter 39n
+
+* Emitter RFC & Bias Resistor
+L2 emitter n_l2_2 470n
+R3 n_l2_2 0 200
+
+* Base Bias & Multi-Decade VHF Bypass
+VCC vcc 0 dc 5.0
+R1 vcc base 3.9k
+R2 base 0 3.3k
+C3 base 0 100p
+C4 base 0 1n
+C5 base 0 100n
+
+* Active Transistor MMBT5179 (C B E)
+Q1 collector base emitter MMBT5179
+
+* Collector Tuned Tank & Output Match (Merged LC Tank + L-Match)
+L3 collector vcc 150n
+C6 collector 0 6.8p
+C7 collector out 10p
+
+* Bias-Tee on Output
+L4 out bt_dc 1u
+C9 bt_dc 0 100p
+C10 bt_dc 0 10n
+Rbt bt_dc 0 100k
+
+* Output Port P2 (50 Ohm Load)
+V2 out_gen 0 dc 0 portnum 2 z0 50
+Rout out_gen out 50
+
+* MMBT5179 SPICE Model (Fairchild / ON Semi / NXP)
+.model MMBT5179 NPN (IS=1.0E-14 BF=90 VAF=50 IKF=0.1 ISE=1.0E-14 NE=1.5 BR=2 VAR=10 IKR=0.01 ISC=0 NC=2 RB=10 RE=1 RC=5 CJE=1.2E-12 VJE=0.7 MJE=0.33 TF=0.09E-9 CJC=1.0E-12 VJC=0.5 MJC=0.33 TR=10E-9)
+
+.control
+op
+echo "=== DC Operating Point ==="
+print v(collector) v(base) v(emitter) i(VCC)
+
+* S-Parameter Analysis from 70 MHz to 130 MHz
+sp lin 61 70MEG 130MEG 1
+echo "=== S-Parameters at 98 MHz ==="
+print db(s_1_1) db(s_2_1) db(s_1_2) db(s_2_2)
+quit
+.endc
+.end
+
