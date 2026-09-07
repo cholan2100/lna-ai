@@ -43,19 +43,19 @@ def generate_schematic():
     comps.append('<CLIN TL_IN 1 100 260 -26 -105 0 0 "Subst1" 0 "1.5 mm" 1 "0.35 mm" 1 "8.5 mm" 1 "Metal" 0 "no" 0>')
     wires.append('<130 260 180 260 "" 0 0 0 "">')
 
-    # Node (180, 260): Shunt LC Tank BPF (L1 18nH || C2 47pF to GND)
+    # Node (180, 260): Shunt LC Tank BPF (L1 22nH || C2 27pF to GND)
     # L1: cx=180, cy=290. Top: (180, 260), Bot: (180, 320)
-    comps.append('<L L1 1 180 290 -35 -26 0 1 "18 nH" 1 "" 0>')
+    comps.append('<L L1 1 180 290 -35 -26 0 1 "22 nH" 1 "" 0>')
     comps.append('<GND * 1 180 320 0 0 0 0>')
 
     # C2: cx=210, cy=290. Top: (210, 260), Bot: (210, 320)
     wires.append('<180 260 210 260 "" 0 0 0 "">')
-    comps.append('<C C2 1 210 290 15 -26 0 1 "47 pF" 1 "" 0 "neutral" 0>')
+    comps.append('<C C2 1 210 290 15 -26 0 1 "27 pF" 1 "" 0 "neutral" 0>')
     comps.append('<GND * 1 210 320 0 0 0 0>')
 
-    # Series C1 (100pF): cx=260, cy=260. Ports: (230, 260), (290, 260). Text placed well ABOVE (ty=-55)
+    # Series C1 (91pF): cx=260, cy=260. Ports: (230, 260), (290, 260). Text placed well ABOVE (ty=-55)
     wires.append('<210 260 230 260 "" 0 0 0 "">')
-    comps.append('<C C1 1 260 260 -25 -55 0 0 "100 pF" 1 "" 0 "neutral" 0>')
+    comps.append('<C C1 1 260 260 -25 -55 0 0 "91 pF" 1 "" 0 "neutral" 0>')
 
     # From C1 (290, 260) to Emitter Choke Node (360, 260)
     wires.append('<290 260 360 260 "" 0 0 0 "">')

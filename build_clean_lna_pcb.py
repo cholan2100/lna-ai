@@ -119,21 +119,21 @@ def build_pcb():
     set_net(d1, 2, '/BAT_IN')
 
     # 5. RF Input Matching Section (Merged LC BPF & Match: Shunt L1 || C2 to GND + Series C1 to Emitter):
-    # C2 Shunt Tank Cap (47pF, 0603 C0G) at (6.5, 17.5), angle 270:
+    # C2 Shunt Tank Cap (27pF, 0603 C0G) at (6.5, 17.5), angle 270:
     # Pad 1 (Top, 16.7125) connects to 50R line, Pad 2 (Bottom, 18.2875) connects to GND via
-    c2 = place_fp('Capacitor_SMD', 'C_0603_1608Metric', 'C2', '47pF', 6.5, 17.5, 270)
+    c2 = place_fp('Capacitor_SMD', 'C_0603_1608Metric', 'C2', '27pF', 6.5, 17.5, 270)
     set_net(c2, 1, '/RF_IN_50R')
     set_net(c2, 2, 'GND')
 
-    # L1 Shunt Match Inductor (18nH, 0603 wirewound) at (8.5, 17.5), angle 270:
+    # L1 Shunt Match Inductor (22nH, 0603 wirewound) at (8.5, 17.5), angle 270:
     # Pad 1 (Top, 16.7125) connects to 50R line, Pad 2 (Bottom, 18.2875) connects to GND via
-    l1 = place_fp('Inductor_SMD', 'L_0603_1608Metric', 'L1', '18nH', 8.5, 17.5, 270)
+    l1 = place_fp('Inductor_SMD', 'L_0603_1608Metric', 'L1', '22nH', 8.5, 17.5, 270)
     set_net(l1, 1, '/RF_IN_50R')
     set_net(l1, 2, 'GND')
 
-    # C1 Series Match & DC Block (100pF, 0805 NP0) at (11.5, 15.95), angle 0: Collinear with Q1 Emitter!
+    # C1 Series Match & DC Block (91pF, 0805 NP0) at (11.5, 15.95), angle 0: Collinear with Q1 Emitter!
     # Pad 1 (Left, 10.55) connects from 50R line via miter, Pad 2 (Right, 12.45) connects straight to Emitter
-    c1 = place_fp('Capacitor_SMD', 'C_0805_2012Metric', 'C1', '100pF', 11.5, 15.95, 0)
+    c1 = place_fp('Capacitor_SMD', 'C_0805_2012Metric', 'C1', '91pF', 11.5, 15.95, 0)
     set_net(c1, 1, '/RF_IN_50R')
     set_net(c1, 2, '/EMITTER')
 

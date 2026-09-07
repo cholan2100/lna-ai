@@ -218,17 +218,17 @@ python run_qucs_simulation.py
 ==========================================================================================
 Freq (MHz) |  S21 Gain (dB) | S11 Match (dB) | S22 Out (dB) | S12 Iso (dB) |  K-factor |      Zin (Ohm)
 -----------+----------------+----------------+--------------+--------------+-----------+---------------
-      88.0 |         +14.81 |          -5.77 |        +0.28 |       -35.47 |      0.30 |   25.9 + j35.9
-      90.0 |         +16.70 |          -7.86 |        +0.28 |       -33.40 |      0.29 |   36.1 + j34.9
-      92.0 |         +18.31 |         -11.14 |        +0.20 |       -31.60 |      0.29 |   46.8 + j27.7
-      94.0 |         +19.45 |         -16.79 |        +0.01 |       -30.28 |      0.28 |   51.6 + j14.8
-      96.0 |         +19.97 |         -27.85 |        -0.27 |       -29.58 |      0.28 |    48.4 + j3.7
-      98.0 |         +19.88 |         -22.27 |        -0.53 |       -29.49 |      0.28 |    43.1 - j1.9 <-- CENTER
-     100.0 |         +19.37 |         -17.65 |        -0.70 |       -29.84 |      0.28 |    39.2 - j4.6
-     102.0 |         +18.61 |         -15.35 |        -0.76 |       -30.43 |      0.28 |    36.7 - j6.5
-     104.0 |         +17.75 |         -13.67 |        -0.75 |       -31.12 |      0.28 |    34.6 - j8.5
-     106.0 |         +16.87 |         -12.18 |        -0.71 |       -31.84 |      0.28 |   32.4 - j10.5
-     108.0 |         +16.00 |         -10.82 |        -0.64 |       -32.55 |      0.28 |   30.1 - j12.1
+      88.0 |         +14.76 |          -5.62 |        +0.26 |       -35.53 |      0.30 |   29.5 + j42.5
+      90.0 |         +16.59 |          -7.34 |        +0.28 |       -33.51 |      0.29 |   41.0 + j42.1
+      92.0 |         +18.18 |          -9.87 |        +0.24 |       -31.73 |      0.29 |   53.8 + j35.0
+      94.0 |         +19.35 |         -13.74 |        +0.11 |       -30.37 |      0.28 |   61.0 + j20.4
+      96.0 |         +19.93 |         -20.06 |        -0.10 |       -29.62 |      0.28 |    58.5 + j6.6
+      98.0 |         +19.91 |         -31.87 |        -0.32 |       -29.47 |      0.28 |    52.5 - j0.9 <-- CENTER
+     100.0 |         +19.43 |         -25.88 |        -0.48 |       -29.77 |      0.28 |    47.7 - j4.4
+     102.0 |         +18.70 |         -20.68 |        -0.56 |       -30.34 |      0.28 |    44.6 - j6.9
+     104.0 |         +17.86 |         -17.59 |        -0.58 |       -31.01 |      0.28 |    42.1 - j9.3
+     106.0 |         +17.01 |         -15.24 |        -0.56 |       -31.70 |      0.28 |   39.6 - j11.7
+     108.0 |         +16.16 |         -13.33 |        -0.53 |       -32.39 |      0.28 |   36.9 - j13.8
 ```
 
 Touchstone file exported: `lna_fm_98mhz_cpwg.s2p`
@@ -288,9 +288,9 @@ Generated files in `renders/`:
 | Ref | Value | Footprint | Description | Recommended Part |
 | :--- | :--- | :--- | :--- | :--- |
 | **Q1** | MMBT5179 | SOT-23-3 | VHF/UHF NPN RF BJT ($f_T = 1.4\text{ GHz}$) | ON Semi / Central Semi MMBT5179 |
-| **L1** | 18 nH | 0603 SMD | RF Input shunt tank inductor (High-Q wirewound) | Murata LQW18AN18NG00D |
-| **C2** | 47 pF | 0603 SMD | RF Input shunt tank capacitor (Pre-filter C0G) | KEMET C0603C470J5GACTU |
-| **C1** | 100 pF | 0805 SMD | Input series match & DC block capacitor (C0G) | KEMET C0805C101J5GACTU |
+| **L1** | 22 nH | 0603 SMD | RF Input shunt tank inductor (High-Q wirewound) | Murata LQW18AN22NG00D |
+| **C2** | 27 pF | 0603 SMD | RF Input shunt tank capacitor (Pre-filter C0G) | KEMET C0603C270J5GACTU |
+| **C1** | 91 pF | 0805 SMD | Input series match & DC block capacitor (C0G) | KEMET C0805C910J5GACTU |
 | **L2** | 470 nH | 0603 SMD | Emitter DC bias return RF choke | Coilcraft 0603CS-R47XJLU |
 | **L3** | 150 nH | 0603 SMD | Collector resonant tank tuning inductor | Murata LQW18ANR15J00D |
 | **L4** | 1.0 $\mu$H | 0603 SMD | Bias-Tee DC feed RF choke | Coilcraft 0603LS-102XJLB |

@@ -62,17 +62,18 @@ For the MMBT5179 ($f_T = 1.4\text{ GHz}$, $V_{CEO} = 12\text{ V}$, $I_{C,\max} =
 - Load (Emitter): $Z_E \approx 3.5 - j5\ \Omega$ (low common-base input resistance plus emitter lead inductance)
 - **Merged Filter & Match Architecture**:
   Rather than cascading an isolated 98 MHz filter stage (which would mismatch the 3.5 $\Omega$ emitter), the input matching network is synthesized as a **merged parallel LC tank ($L_1 \parallel C_2$)** shunting to ground, followed by series capacitor $C_1$:
-  - Shunt Inductor $L_1 = 18\text{ nH}$ (High-Q wirewound 0603)
-  - Shunt Capacitor $C_2 = 47\text{ pF}$ (NP0/C0G 0603)
-  - Series Capacitor $C_1 = 100\text{ pF}$ (NP0/C0G 0805)
+  - Shunt Inductor $L_1 = 22\text{ nH}$ (High-Q wirewound 0603, standard E12)
+  - Shunt Capacitor $C_2 = 27\text{ pF}$ (NP0/C0G 0603, standard E12)
+  - Series Capacitor $C_1 = 91\text{ pF}$ (NP0/C0G 0805, standard E24)
 - **Network Susceptance & Pre-Filter Action**:
-  At 98 MHz, the parallel tank net susceptance is:
-  $$B_{tank} = \omega C_2 - \frac{1}{\omega L_1} = 2\pi(98\times 10^6)(47\times 10^{-12}) - \frac{1}{2\pi(98\times 10^6)(18\times 10^{-9})} \approx 0.0289 - 0.0902 = -0.0613\text{ S}$$
-  This net inductive susceptance provides the exact step-down transformation needed to match $50\ \Omega$ into the low emitter impedance, while simultaneously introducing true second-order bandpass filtering:
-  - Low frequencies ($< 88\text{ MHz}$): $L_1$ shunts out-of-band signals to ground ($S_{21} = -20.7\text{ dB}$ at 50 MHz, a 3.4 dB improvement).
-  - High frequencies ($> 108\text{ MHz}$): $C_2$ shunts high-frequency VHF/UHF harmonics to ground ($S_{21} = +1.3\text{ dB}$ at 200 MHz, a 2.2 dB rejection improvement).
-- Resulting simulated $S_{11}$: **-22.27 dB** ($Z_{in} = 43.1 - j1.9\ \Omega$, VSWR = 1.17:1).
-- In-band gain $S_{21}$: **+19.88 dB** at 98 MHz center.
+  At 98 MHz, series $C_1 = 91\text{ pF}$ establishes the exact quality factor $Q = \sqrt{R_0/R_E - 1} \approx \sqrt{50/3.5 - 1} \approx 3.64$ to transform the real part of the emitter input impedance up to $50.0\ \Omega$.
+  Simultaneously, the parallel tank net susceptance:
+  $$B_{tank} = \omega C_2 - \frac{1}{\omega L_1} = 2\pi(98\times 10^6)(27\times 10^{-12}) - \frac{1}{2\pi(98\times 10^6)(22\times 10^{-9})} \approx 0.0166 - 0.0738 = -0.0572\text{ S}$$
+  cancels the residual capacitive susceptance from the series-to-parallel transformed emitter impedance, resulting in a near-ideal conjugate match:
+  - Low frequencies ($< 88\text{ MHz}$): $L_1$ shunts out-of-band signals to ground ($S_{21} = -19.9\text{ dB}$ at 50 MHz).
+  - High frequencies ($> 108\text{ MHz}$): $C_2$ shunts high-frequency VHF/UHF harmonics to ground ($S_{21} = +2.1\text{ dB}$ at 200 MHz).
+- Resulting simulated $S_{11}$: **-31.87 dB** ($Z_{in} = 52.5 - j0.9\ \Omega$, VSWR = 1.05:1).
+- In-band gain $S_{21}$: **+19.91 dB** at 98 MHz center.
 
 ### 2.4 Collector Resonant Tank & Output Match ($L_3, C_6, C_7, L_4$)
 - Center Frequency: $f_0 = 98.0\text{ MHz}$
