@@ -81,3 +81,4 @@ The shunt capacitor $C_2$ (47 pF) provides a direct low-impedance AC ground path
 - **RF Connection**: Pad 1 taps the $1.5\text{ mm}$ $50\ \Omega$ CPWG trace via a short $0.6\text{ mm}$ width stub at $(6.5, 15.0)$.
 - **Ground Return**: Pad 2 connects through a dedicated $0.4\text{ mm}$ trace directly to a low-inductance ground via ($0.3\text{ mm}$ drill, $0.6\text{ mm}$ annular ring) at $(6.5, 20.0)$.
 - **DRC / ERC Status**: 0 errors, 0 warnings, 0 exclusions.
+
