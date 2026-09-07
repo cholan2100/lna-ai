@@ -21,5 +21,5 @@ venv/
 .vscode/
 .idea/
 *.swp
-*~
-
+# openEMS simulation run
+em_simulation_run/
