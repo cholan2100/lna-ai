@@ -35,7 +35,8 @@ def export_pdfs():
         ("top_copper_mask_pos.pdf", ["F.Cu", "Edge.Cuts"], True, False, "#ffffff"),
         ("top_copper_mask_neg.pdf", ["F.Cu", "Edge.Cuts"], True, True, "#000000"),
         ("top_solder_mask.pdf", ["F.Mask", "Edge.Cuts"], True, False, "#ffffff"),
-        ("top_composite_2d.pdf", ["F.Cu", "F.Mask", "F.Silkscreen", "Edge.Cuts"], False, False, "#ffffff"),
+        ("top_composite_2d.pdf", ["F.Cu", "F.Mask", "F.SilkS", "Edge.Cuts"], False, False, "#ffffff"),
+        ("top_silkscreen.pdf", ["F.SilkS", "Edge.Cuts"], True, True, "#000000"),
     ]
 
     for filename, layers, bw, neg, bg_col in jobs:
@@ -62,6 +63,8 @@ def export_svgs():
     jobs = [
         ("top_copper_layer.svg", ["F.Cu", "Edge.Cuts"], False),
         ("top_solder_mask.svg", ["F.Mask", "Edge.Cuts"], False),
+        ("top_composite_2d.svg", ["F.Cu", "F.SilkS", "Edge.Cuts"], False),
+        ("top_silkscreen.svg", ["F.SilkS", "Edge.Cuts"], False),
     ]
 
     for filename, layers, bw in jobs:
@@ -151,6 +154,17 @@ def export_schematic_renders():
         except OSError:
             pass
 
+def export_3d_renders():
+    """Export photorealistic 3D raytraced renders (top, iso, bottom)."""
+    renders = [
+        ("top_render.png", [KICAD_CLI, "pcb", "render", "--side", "top", "--width", "2000", "--height", "1200", "--quality", "high", "-o", str(RENDERS_DIR / "top_render.png"), str(PCB_PATH)]),
+        ("iso_render.png", [KICAD_CLI, "pcb", "render", "--rotate", "-45,0,45", "--zoom", "1.2", "--width", "2000", "--height", "1200", "--quality", "high", "-o", str(RENDERS_DIR / "iso_render.png"), str(PCB_PATH)]),
+        ("bottom_render.png", [KICAD_CLI, "pcb", "render", "--side", "bottom", "--width", "2000", "--height", "1200", "--quality", "high", "-o", str(RENDERS_DIR / "bottom_render.png"), str(PCB_PATH)]),
+    ]
+    for name, cmd in renders:
+        print(f"Rendering 3D: {name}...")
+        subprocess.run(cmd, check=True)
+
 def main():
     print("=== Starting 2D Artwork & Mask Generation ===")
     export_pdfs()
@@ -161,7 +175,11 @@ def main():
     render_and_crop("top_copper_mask_pos.pdf", "top_copper_mask_bw.png", is_dark_bg=False)
     render_and_crop("top_copper_mask_neg.pdf", "top_copper_mask_neg.png", is_dark_bg=True)
     render_and_crop("top_solder_mask.pdf", "top_solder_mask.png", is_dark_bg=False)
+    render_and_crop("top_silkscreen.pdf", "top_silkscreen.png", is_dark_bg=True)
     render_and_crop("top_composite_2d.pdf", "top_composite_2d.png", is_dark_bg=False)
+
+    print("\n=== Exporting 3D Raytraced Renders ===")
+    export_3d_renders()
 
     print("\n=== Exporting Schematic Vector & Zoomed Artwork ===")
     export_schematic_renders()

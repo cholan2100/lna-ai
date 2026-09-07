@@ -475,8 +475,8 @@ def build_pcb():
 
         # 2. Active Stage Q1 & Emitter Choke / Bias
         'Q1':  (19.0, 16.8, 0.80, 0.13),   # MMBT5179 (SOT-23)
-        'L2':  (16.0, 20.0, 0.80, 0.13),   # Emitter RFC 470nH
-        'R3':  (16.0, 24.5, 0.80, 0.13),   # Emitter Resistor 200R
+        'L2':  (13.3, 20.0, 0.80, 0.13),   # Emitter RFC 470nH (left side)
+        'R3':  (13.3, 24.5, 0.80, 0.13),   # Emitter Resistor 200R (left side)
 
         # 3. Base Bias & Triple Bypass Caps
         'C3':  (17.8, 10.5, 0.80, 0.13),   # Base bypass 100pF
@@ -494,7 +494,7 @@ def build_pcb():
         'L4':  (34.6, 10.0, 0.80, 0.13),   # Bias Tee Choke 1uH
         'C9':  (39.0, 11.5, 0.80, 0.13),   # Bias Tee 100pF
         'C10': (39.5, 6.0, 0.80, 0.13),    # Bias Tee 10nF
-        'D2':  (36.0, 7.8, 0.80, 0.13),    # Bias Tee BAT54
+        'D2':  (37.8, 4.8, 0.80, 0.13),    # Bias Tee BAT54 (right side)
         'JP1': (33.0, 1.8, 0.80, 0.13),    # Solder Jumper
 
         # 6. Power Decoupling & LED
