@@ -108,13 +108,13 @@ def build_pcb():
             p.SetNet(get_net('GND'))
             p.SetLocalZoneConnection(pcbnew.ZONE_CONNECTION_FULL)
 
-    # J3: Battery solder pads at (13.54, 3.5), angle 270: Pad 1 (BAT+) at 13.54, Pad 2 (GND) at 11.0
-    j3 = place_fp('Connector_PinHeader_2.54mm', 'PinHeader_1x02_P2.54mm_Vertical', 'J3', 'BAT_PADS', 13.54, 3.5, 270)
+    # J3: Battery / DC power solder pads at (20.0, 3.5), angle 90: Pad 1 (BAT+) at 18.73, Pad 2 (GND) at 21.27
+    j3 = place_fp('Connector_PinHeader_2.54mm', 'PinHeader_1x02_P2.54mm_Vertical', 'J3', 'BAT_PADS', 20.0, 3.5, 90)
     set_net(j3, 1, '/BAT_IN')
     set_net(j3, 2, 'GND')
 
-    # D1: BAT54 Battery Protection Diode at (18.5, 3.5), angle 180: Pad 2 (Anode) at 16.85, Pad 1 (Cathode) at 20.15
-    d1 = place_fp('Diode_SMD', 'D_SOD-123', 'D1', 'BAT54', 18.5, 3.5, 180)
+    # D1: BAT54 Battery Protection Diode at (15.0, 3.5), angle 0: Pad 1 (Cathode, VCC) at 13.35, Pad 2 (Anode, /BAT_IN) at 16.65
+    d1 = place_fp('Diode_SMD', 'D_SOD-123', 'D1', 'BAT54', 15.0, 3.5, 0)
     set_net(d1, 1, 'VCC')
     set_net(d1, 2, '/BAT_IN')
 
@@ -229,13 +229,13 @@ def build_pcb():
     set_net(c12, 1, 'VCC')
     set_net(c12, 2, 'GND')
 
-    # R4 LED Resistor at (29.5, 6.0), angle 270: Pad 1 (Top, VCC) at 5.225, Pad 2 (Bottom) at 6.775
-    r4 = place_fp('Resistor_SMD', 'R_0603_1608Metric', 'R4', '2.2k', 29.5, 6.0, 270)
+    # R4 LED Resistor at (10.95, 5.0), angle 90: Pad 2 (Top) at 4.225, Pad 1 (Bottom, VCC) at 5.775
+    r4 = place_fp('Resistor_SMD', 'R_0603_1608Metric', 'R4', '2.2k', 10.95, 5.0, 90)
     set_net(r4, 1, 'VCC')
     set_net(r4, 2, 'Net-(D3-Pad2)')
 
-    # D3 LED at (29.5, 9.5), angle 90: Pad 2 (Top, Anode) at 8.5625, Pad 1 (Bottom, Cathode) at 10.4375
-    d3 = place_fp('LED_SMD', 'LED_0805_2012Metric', 'D3', 'LED', 29.5, 9.5, 90)
+    # D3 LED at (10.0, 2.0) (10mm from left, 2mm from top), angle 0: Pad 1 (Left, Cathode) at 9.05, Pad 2 (Right, Anode) at 10.95
+    d3 = place_fp('LED_SMD', 'LED_0805_2012Metric', 'D3', 'LED', 10.0, 2.0, 0)
     set_net(d3, 1, 'GND')
     set_net(d3, 2, 'Net-(D3-Pad2)')
 
@@ -319,12 +319,12 @@ def build_pcb():
     add_seg(p_l4_2[0], p_l4_2[1], p_d2_2[0], p_d2_2[1], 0.4, '/BIAS_TEE_DC')
     add_seg(p_d2_2[0], p_d2_2[1], p_jp1_1[0], p_jp1_1[1], 0.4, '/BIAS_TEE_DC')
 
-    # 10. /BAT_IN
+    # 10. /BAT_IN: straight horizontal trace from J3 pad 1 (18.73, 3.5) to D1 pad 2 (16.65, 3.5)
     p_j3_1 = pad_pos(j3, 1)
     p_d1_2 = pad_pos(d1, 2)
     add_seg(p_j3_1[0], p_j3_1[1], p_d1_2[0], p_d1_2[1], 0.6, '/BAT_IN')
 
-    # 11. Net-(D3-Pad2)
+    # 11. Net-(D3-Pad2): straight vertical trace from R4 pad 2 (10.95, 4.225) to D3 pad 2 (10.95, 2.0)
     p_r4_2 = pad_pos(r4, 2)
     p_d3_2 = pad_pos(d3, 2)
     add_seg(p_r4_2[0], p_r4_2[1], p_d3_2[0], p_d3_2[1], 0.35, 'Net-(D3-Pad2)')
@@ -339,25 +339,24 @@ def build_pcb():
     p_d2_1 = pad_pos(d2, 1)
     p_jp1_2 = pad_pos(jp1, 2)
 
-    # Backbone from D1 (20.15, 4.5) to D2 (36.0, 4.5)
-    add_seg(p_d1_1[0], 4.5, 36.0, 4.5, 0.6, 'VCC')
-    add_seg(p_d1_1[0], p_d1_1[1], p_d1_1[0], 4.5, 0.6, 'VCC')
-    # R1.2 across along Y=6.2 (clear of J3 at Y=3.5 and Base line at Y=10.5)
-    add_seg(p_r1_2[0], p_r1_2[1], p_r1_2[0], 6.2, 0.4, 'VCC')
-    add_seg(p_r1_2[0], 6.2, p_d1_1[0], 6.2, 0.4, 'VCC')
-    add_seg(p_d1_1[0], 6.2, p_d1_1[0], 4.5, 0.4, 'VCC')
-    # L3.2 up to backbone
-    add_seg(p_l3_2[0], p_l3_2[1], p_l3_2[0], 4.5, 0.5, 'VCC')
-    # C11.1 up to backbone
-    add_seg(p_c11_1[0], p_c11_1[1], p_c11_1[0], 4.5, 0.5, 'VCC')
-    # C12.1 up to backbone
-    add_seg(p_c12_1[0], p_c12_1[1], p_c12_1[0], 4.5, 0.5, 'VCC')
-    # R4.1 up to backbone
-    add_seg(p_r4_1[0], p_r4_1[1], p_r4_1[0], 4.5, 0.5, 'VCC')
-    # D2.1 down to backbone
+    # Main East Backbone at Y=4.5 from X=26.8 to X=36.0 (connecting C12, JP1, D2)
+    add_seg(26.8, 4.5, 36.0, 4.5, 0.5, 'VCC')
     add_seg(p_d2_1[0], p_d2_1[1], p_d2_1[0], 4.5, 0.5, 'VCC')
-    # JP1.2 to backbone
     add_seg(p_jp1_2[0], p_jp1_2[1], p_jp1_2[0], 4.5, 0.4, 'VCC')
+
+    # Main Central VCC branch at Y=6.2 from X=6.0 to X=26.8:
+    add_seg(p_r1_2[0], 6.2, 26.8, 6.2, 0.5, 'VCC')
+
+    # Connect components to this Y=6.2 bus:
+    add_seg(p_r1_2[0], p_r1_2[1], p_r1_2[0], 6.2, 0.4, 'VCC')
+    add_seg(p_r4_1[0], p_r4_1[1], p_r4_1[0], 6.2, 0.4, 'VCC')
+    add_seg(p_d1_1[0], p_d1_1[1], p_d1_1[0], 6.2, 0.6, 'VCC')
+    add_seg(p_l3_2[0], p_l3_2[1], p_l3_2[0], 6.2, 0.5, 'VCC')
+    add_seg(p_c11_1[0], p_c11_1[1], p_c11_1[0], 6.2, 0.5, 'VCC')
+    add_seg(p_c12_1[0], p_c12_1[1], p_c12_1[0], 6.2, 0.5, 'VCC')
+
+    # Link between Y=6.2 and Y=4.5 at X=26.8
+    add_seg(26.8, 4.5, 26.8, 6.2, 0.5, 'VCC')
 
     # =========================================================================
     # GROUND CONNECTIONS & VIAS
@@ -367,8 +366,7 @@ def build_pcb():
         add_via(via_x, via_y, 'GND')
         add_seg(pos[0], pos[1], via_x, via_y, 0.4, 'GND')
 
-    # J3 GND via placed at (8.5, 3.5) well clear of VCC and H1
-    connect_gnd(j3, 2, 8.5, 3.5)
+    # J3 GND is a plated through-hole pad natively connecting F.Cu and B.Cu GND zones
     connect_gnd(c2, 2, 6.5, 20.0)
     connect_gnd(l1, 2, 8.5, 20.5)
     connect_gnd(r3, 2, 14.675, 27.0)
@@ -381,7 +379,7 @@ def build_pcb():
     connect_gnd(c10, 2, 41.5, 7.5)
     connect_gnd(c11, 2, 24.0, 10.0)
     connect_gnd(c12, 2, 26.8, 10.0)
-    connect_gnd(d3, 1, 29.5, 12.0)
+    connect_gnd(d3, 1, 7.0, 2.0)
 
     # Comprehensive RF Via Fencing (from Collector to SMA OUT, plus Input CPWG & Board Stitching)
     rf_fence = [
@@ -416,7 +414,7 @@ def build_pcb():
         (8.0, 26.5), (18.0, 26.5), (22.0, 26.5), (26.0, 26.5), (30.0, 26.5), (34.0, 26.5), (38.0, 26.5),
         (4.0, 28.5), (10.0, 28.5), (16.0, 28.5), (22.0, 28.5), (28.0, 28.5), (34.0, 28.5), (40.0, 28.5),
         # North Ground Zone (Y = 1.5 mm)
-        (4.0, 1.5), (18.0, 1.5), (22.0, 1.5), (26.0, 1.5), (30.0, 1.5), (34.0, 1.5), (38.0, 1.5),
+        (4.0, 1.5), (15.5, 1.5), (27.0, 1.5), (30.0, 1.5), (34.0, 1.5), (38.0, 1.5),
         # Perimeter End Stitching
         (1.5, 5.0), (1.5, 9.0), (1.5, 21.0), (1.5, 25.0),
         (44.5, 5.0), (44.5, 9.0), (44.5, 21.0), (44.5, 25.0)
@@ -449,22 +447,24 @@ def build_pcb():
     # =========================================================================
     # SILKSCREEN LABELS
     # =========================================================================
-    def add_text(text, x, y, size=0.9, thick=0.15):
-        t = pcbnew.PCB_TEXT(board)
-        t.SetText(text)
-        t.SetPosition(pcbnew.VECTOR2I(mm(x), mm(y)))
-        t.SetLayer(pcbnew.F_SilkS)
-        t.SetTextSize(pcbnew.VECTOR2I(mm(size), mm(size)))
-        t.SetTextThickness(mm(thick))
-        board.Add(t)
+    def add_text(text, x, y, size=1.0, thickness=0.15, layer=pcbnew.F_SilkS):
+        txt = pcbnew.PCB_TEXT(board)
+        txt.SetText(text)
+        txt.SetPosition(pcbnew.VECTOR2I(mm(x), mm(y)))
+        txt.SetTextSize(pcbnew.VECTOR2I(mm(size), mm(size)))
+        txt.SetTextThickness(mm(thickness))
+        txt.SetLayer(layer)
+        board.Add(txt)
 
     add_text('98MHz FM LNA', 23.0, 26.2, 1.2, 0.18)
     add_text('MMBT5179 (CB)', 23.0, 28.0, 0.9, 0.15)
     add_text('BIAS-TEE ENABLED', 23.0, 24.5, 0.85, 0.15)
     add_text('IN 50R', 5.0, 23.5, 0.85, 0.15)
     add_text('OUT 50R', 40.0, 21.0, 0.85, 0.15)
-    add_text('BAT+', 13.54, 1.0, 0.85, 0.15)
-    add_text('GND-', 8.5, 1.0, 0.85, 0.15)
+    add_text('+', 18.73, 1.2, 0.80, 0.13)
+    add_text('-', 21.27, 1.2, 0.80, 0.13)
+    add_text('BAT', 18.73, 5.9, 0.80, 0.13)
+    add_text('GND', 21.27, 5.9, 0.80, 0.13)
 
     # Component Reference Designators on F.SilkS (Optimized for 0 DRC violations):
     silk_map = {
@@ -498,11 +498,11 @@ def build_pcb():
         'JP1': (33.0, 1.8, 0.80, 0.13),    # Solder Jumper
 
         # 6. Power Decoupling & LED
-        'D1':  (18.5, 5.2, 0.80, 0.13),    # Battery Diode BAT54
-        'C11': (22.4, 7.5, 0.80, 0.13),    # 10uF
-        'C12': (26.8, 4.8, 0.80, 0.13),    # 100nF
-        'R4':  (31.2, 6.0, 0.80, 0.13),    # LED Resistor 2.2k
-        'D3':  (31.8, 9.5, 0.80, 0.13),    # Power LED
+        'D1':  (15.0, 1.8, 0.80, 0.13),    # Battery Diode BAT54 (above D1)
+        'C11': (22.2, 7.5, 0.80, 0.13),    # 10uF
+        'C12': (28.8, 7.5, 0.80, 0.13),    # 100nF
+        'R4':  (8.5, 5.0, 0.80, 0.13),     # LED Resistor 2.2k (left of R4)
+        'D3':  (12.4, 1.3, 0.80, 0.13),    # Power LED (right of D3: 10mm from left, 2mm from top)
     }
 
     for ref_name, (sx, sy, sz, sth) in silk_map.items():
