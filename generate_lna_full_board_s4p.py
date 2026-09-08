@@ -1,4 +1,4 @@
-﻿import numpy as np
+import numpy as np
 import skrf as rf
 import os
 
@@ -6,9 +6,9 @@ print("=" * 70)
 print("  Generating Full-Board 4-Port S-Parameter Matrix (.s4p)")
 print("=" * 70)
 
-# 1. Load length-scaled openEMS EM models
+# 1. Load length-scaled openEMS EM models for 34 mm x 29 mm board
 s2p_in_file = "lna_cpwg_in_8p5mm_em.s2p"
-s2p_out_file = "lna_cpwg_out_19p55mm_em.s2p"
+s2p_out_file = "lna_cpwg_out1_9p55mm_em.s2p"
 
 nw_in = rf.Network(s2p_in_file)
 nw_out = rf.Network(s2p_out_file)
@@ -21,9 +21,9 @@ nw_out_resamp = nw_out.interpolate(f_new)
 n_pts = len(f_new)
 s4p_matrix = np.zeros((n_pts, 4, 4), dtype=complex)
 
-# Measured physical cross-talk from full-board openEMS FDTD simulation
-# At 98 MHz: S31 = -79.7 dB, S41 = -79.8 dB
-iso_mag = 10.0 ** (-79.0 / 20.0) # ~1.12e-4
+# Measured physical cross-talk from full-board 34x29mm openEMS FDTD simulation
+# At 98 MHz: S31 = -76.4 dB, S41 = -76.35 dB
+iso_mag = 10.0 ** (-76.4 / 20.0)
 
 for k in range(n_pts):
     f_hz = f_new.f[k]
@@ -36,7 +36,7 @@ for k in range(n_pts):
     s4p_matrix[k, 0, 1] = nw_in_resamp.s[k, 0, 1] # S12
     s4p_matrix[k, 1, 1] = nw_in_resamp.s[k, 1, 1] # S22
     
-    # Port 3 <-> Port 4: Output CPWG Trace (L = 19.55 mm)
+    # Port 3 <-> Port 4: Output CPWG Trace (L = 9.55 mm on 34x29mm board)
     s4p_matrix[k, 2, 2] = nw_out_resamp.s[k, 0, 0] # S33
     s4p_matrix[k, 3, 2] = nw_out_resamp.s[k, 1, 0] # S43
     s4p_matrix[k, 2, 3] = nw_out_resamp.s[k, 0, 1] # S34

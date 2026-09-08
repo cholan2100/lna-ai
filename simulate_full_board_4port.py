@@ -1,4 +1,4 @@
-﻿import sys, os, time, shutil
+import sys, os, time, shutil
 import numpy as np
 import CSXCAD, openEMS
 import skrf as rf
@@ -17,9 +17,9 @@ freqs = np.linspace(f_min, f_max, n_points)
 f0 = 1500e6
 fc = 1450e6
 
-# Board physical dimensions (mm)
-length = 46.0
-sub_width = 30.0
+# Board physical dimensions (mm) - 34 mm x 29 mm Compact Enclosure
+length = 34.0
+sub_width = 29.0
 height = 1.6
 w_trace = 1.5
 gap = 0.35
@@ -40,12 +40,12 @@ def build_model(excited_port_idx):
     grid = csx.GetGrid()
     grid.SetDeltaUnit(1e-3)
 
-    # Grid lines
-    x_keys = [-28.0, -23.0, -22.5, -15.0, -14.5, 0.0, 2.5, 3.0, 22.5, 23.0, 28.0]
+    # Grid lines for 34 mm x 29 mm board
+    x_keys = [-22.0, -17.0, -16.5, -9.0, -8.5, 0.0, 6.0, 6.5, 16.5, 17.0, 22.0]
     for x in x_keys: grid.AddLine('x', x)
     grid.SmoothMeshLines('x', 0.6, 1.4)
 
-    y_keys = [-20.0, -15.0, -2.8, -2.2, -1.10, -0.75, 0.0, 0.75, 1.10, 2.2, 2.8, 15.0, 20.0]
+    y_keys = [-19.0, -14.5, -2.8, -2.2, -1.10, -0.75, 0.0, 0.75, 1.10, 2.2, 2.8, 14.5, 19.0]
     for y in y_keys: grid.AddLine('y', y)
     grid.SmoothMeshLines('y', 0.4, 1.4)
 
@@ -66,10 +66,10 @@ def build_model(excited_port_idx):
 
     # Copper Traces
     cu = csx.AddConductingSheet('Copper', conductivity=copper_sigma, thickness=copper_t)
-    # Input Trace: X = -23.0 to -14.5 mm (L = 8.5 mm)
-    cu.AddBox([-half_l, -w_trace / 2.0, height], [-14.5, w_trace / 2.0, height], priority=2)
-    # Output Trace: X = +2.5 to +23.0 mm (L = 20.5 mm)
-    cu.AddBox([2.5, -w_trace / 2.0, height], [half_l, w_trace / 2.0, height], priority=2)
+    # Input Trace: X = -17.0 to -8.5 mm (L = 8.5 mm)
+    cu.AddBox([-half_l, -w_trace / 2.0, height], [-8.5, w_trace / 2.0, height], priority=2)
+    # Output Trace: X = +6.0 to +17.0 mm (L = 11.0 mm)
+    cu.AddBox([6.0, -w_trace / 2.0, height], [half_l, w_trace / 2.0, height], priority=2)
 
     # FDTD Solver
     fdtd = openEMS.openEMS(NrTS=25000, EndCriteria=1e-4)
@@ -79,15 +79,17 @@ def build_model(excited_port_idx):
 
     # 4 Lumped Ports
     p1 = fdtd.AddLumpedPort(1, 50.0, [-half_l, -w_trace / 2.0, height], [-half_l + 0.5, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 1 else 0))
-    p2 = fdtd.AddLumpedPort(2, 50.0, [-14.5, -w_trace / 2.0, height], [-15.0, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 2 else 0))
-    p3 = fdtd.AddLumpedPort(3, 50.0, [2.5, -w_trace / 2.0, height], [3.0, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 3 else 0))
+    p2 = fdtd.AddLumpedPort(2, 50.0, [-8.5, -w_trace / 2.0, height], [-9.0, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 2 else 0))
+    p3 = fdtd.AddLumpedPort(3, 50.0, [6.0, -w_trace / 2.0, height], [6.5, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 3 else 0))
     p4 = fdtd.AddLumpedPort(4, 50.0, [half_l, -w_trace / 2.0, height], [half_l - 0.5, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 4 else 0))
 
     return csx, fdtd, [p1, p2, p3, p4]
 
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Step 1: Run Port 1 excitation (drives Input Trace from SMA In)
 print("\n[Step 1/2] Simulating Port 1 excitation (SMA In)...")
-sim_dir_p1 = os.path.join(os.getcwd(), "em_run_p1")
+sim_dir_p1 = os.path.join(ROOT_DIR, "em_run_p1")
 os.makedirs(sim_dir_p1, exist_ok=True)
 csx1, fdtd1, ports1 = build_model(excited_port_idx=1)
 csx1.Write2XML(os.path.join(sim_dir_p1, "structure.xml"))
@@ -106,7 +108,7 @@ s41 = ports1[3].uf_ref / v_inc1
 
 # Step 2: Run Port 4 excitation (drives Output Trace from SMA Out)
 print("\n[Step 2/2] Simulating Port 4 excitation (SMA Out)...")
-sim_dir_p4 = os.path.join(os.getcwd(), "em_run_p4")
+sim_dir_p4 = os.path.join(ROOT_DIR, "em_run_p4")
 os.makedirs(sim_dir_p4, exist_ok=True)
 csx4, fdtd4, ports4 = build_model(excited_port_idx=4)
 csx4.Write2XML(os.path.join(sim_dir_p4, "structure.xml"))
@@ -157,7 +159,7 @@ s_matrix[:, 1, 2] = s31
 s_matrix[:, 2, 1] = s31
 
 # Step 4: Write Touchstone .s4p file using skrf
-out_s4p = os.path.join(os.getcwd(), "lna_board_full_4port.s4p")
+out_s4p = os.path.join(ROOT_DIR, "lna_board_full_4port.s4p")
 rf_freq = rf.Frequency.from_f(freqs, unit='hz')
 nw = rf.Network(frequency=rf_freq, s=s_matrix, z0=50.0)
 nw.write_touchstone(out_s4p)
@@ -172,7 +174,7 @@ print("=" * 70)
 print(f"  Input Trace (Port 1 <-> Port 2, L = 8.5 mm):")
 print(f"    S11 (Return Loss)   : {20 * np.log10(np.abs(s_matrix[idx_98, 0, 0])):.2f} dB")
 print(f"    S21 (Insertion Loss): {20 * np.log10(np.abs(s_matrix[idx_98, 1, 0])):.3f} dB")
-print(f"  Output Trace (Port 3 <-> Port 4, L = 20.5 mm):")
+print(f"  Output Trace (Port 3 <-> Port 4, L = 11.0 mm):")
 print(f"    S44 (Return Loss)   : {20 * np.log10(np.abs(s_matrix[idx_98, 3, 3])):.2f} dB")
 print(f"    S34 (Insertion Loss): {20 * np.log10(np.abs(s_matrix[idx_98, 2, 3])):.3f} dB")
 print(f"  Board Physical Isolation & Cross-Talk:")
