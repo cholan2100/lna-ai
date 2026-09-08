@@ -170,14 +170,14 @@ The repository includes both native STEP CAD files and 3D printing STL files for
 
 | File Name | Format | Description |
 | :--- | :---: | :--- |
-| [`h4m-keytop-24.step`](h4m-keytop-24.step) | STEP | OpenSourceSDR Lab / H4M Enclosure **Base Case** |
-| [`h4m_case.stl`](h4m_case.stl) | STL | 3D printable mesh of the enclosure base |
-| [`h4m-keytop-25.step`](h4m-keytop-25.step) | STEP | OpenSourceSDR Lab / H4M Enclosure **Top Lid** |
-| [`h4m_lid.stl`](h4m_lid.stl) | STL | 3D printable mesh of the enclosure top lid |
-| [`lna_fm_98mhz_in_enclosure.step`](lna_fm_98mhz_in_enclosure.step) | STEP | Combined 3D assembly: PCB seated inside base case (open top for inspection) |
-| [`lna_fm_98mhz_in_enclosure.stl`](lna_fm_98mhz_in_enclosure.stl) | STL | 3D printable mesh of open enclosure assembly |
-| [`lna_fm_98mhz_enclosure_with_lid.step`](lna_fm_98mhz_enclosure_with_lid.step) | STEP | Complete closed assembly: Base Case + PCB + Lid |
-| [`lna_fm_98mhz_enclosure_with_lid.stl`](lna_fm_98mhz_enclosure_with_lid.stl) | STL | 3D printable mesh of fully assembled closed enclosure |
+| [`enclosure/h4m-keytop-24.step`](enclosure/h4m-keytop-24.step) | STEP | OpenSourceSDR Lab / H4M Enclosure **Base Case** (Credits: pop aruaru) |
+| [`enclosure/h4m_case.stl`](enclosure/h4m_case.stl) | STL | 3D printable mesh of the enclosure base |
+| [`enclosure/h4m-keytop-25.step`](enclosure/h4m-keytop-25.step) | STEP | OpenSourceSDR Lab / H4M Enclosure **Top Lid** (Credits: pop aruaru) |
+| [`enclosure/h4m_lid.stl`](enclosure/h4m_lid.stl) | STL | 3D printable mesh of the enclosure top lid |
+| [`enclosure/lna_fm_98mhz_in_enclosure.step`](enclosure/lna_fm_98mhz_in_enclosure.step) | STEP | Combined 3D assembly: PCB seated inside base case (open top for inspection) |
+| [`enclosure/lna_fm_98mhz_in_enclosure.stl`](enclosure/lna_fm_98mhz_in_enclosure.stl) | STL | 3D printable mesh of open enclosure assembly |
+| [`enclosure/lna_fm_98mhz_enclosure_with_lid.step`](enclosure/lna_fm_98mhz_enclosure_with_lid.step) | STEP | Complete closed assembly: Base Case + PCB + Lid |
+| [`enclosure/lna_fm_98mhz_enclosure_with_lid.stl`](enclosure/lna_fm_98mhz_enclosure_with_lid.stl) | STL | 3D printable mesh of fully assembled closed enclosure |
 | [`lna_fm_98mhz_assembly.step`](lna_fm_98mhz_assembly.step) | STEP | Full PCB assembly with edge-mount SMAs and header pins |
 | [`lna_fm_98mhz_assembly.stl`](lna_fm_98mhz_assembly.stl) | STL | 3D printable mesh of complete PCB assembly |
 | [`lna_fm_98mhz_pcb_no_connectors.step`](lna_fm_98mhz_pcb_no_connectors.step) | STEP | Bare board with components (no connectors) for physical test-fitting |
@@ -194,10 +194,11 @@ The repository includes both native STEP CAD files and 3D printing STL files for
 
 ### Enclosure Attribution & Credits
 > **3D Enclosure Design Credits**:
-> The 3D CAD models for the enclosure base and lid (`h4m-keytop-24.step` and `h4m-keytop-25.step`) are designed by **pop aruaru** and published on [Printables.com](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case):
+> The 3D CAD models for the enclosure base and lid (`enclosure/h4m-keytop-24.step` and `enclosure/h4m-keytop-25.step`) are designed by **pop aruaru** and published on [Printables.com](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case):
 > - **Platform**: [Printables.com by Prusa](https://www.printables.com/)
 > - **Model**: [OpenSourceSDR Lab AMP case by pop aruaru](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case)
 > - **Creator**: **pop aruaru** ([Printables Profile](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case))
+> - **Directory**: See [`enclosure/README.md`](enclosure/README.md) for 3D printing parameters, mechanical tolerances, and assembly details.
 >
 > Full credit and sincere thanks go to **pop aruaru** and the **Printables.com** maker community for providing the original mechanical CAD enclosure design. The PCB outline ($34.00 \times 29.00\text{ mm}$, $R = 3.0\text{ mm}$ fillets), M2 mounting standoff coordinates, edge-mount SMA connector cutouts, and DC power header coordinates in this project were specifically dimensioned and aligned to guarantee seamless, drop-in compatibility with this case.
 
@@ -216,14 +217,17 @@ lna-ai/
 ├── lna_fm_98mhz.kicad_pcb              # KiCad PCB layout (34x29mm, 50Ω CPWG, DRC clean)
 ├── lna_fm_98mhz.step                   # Default 3D mechanical STEP export
 │
-├── h4m-keytop-24.step                  # Enclosure Base Case (STEP) - Credits: pop aruaru on Printables.com
-├── h4m-keytop-25.step                  # Enclosure Top Lid (STEP)  - Credits: pop aruaru on Printables.com
-├── h4m_case.stl                        # Enclosure Base Case (STL mesh)
-├── h4m_lid.stl                         # Enclosure Top Lid (STL mesh)
-├── lna_fm_98mhz_in_enclosure.step      # Combined Assembly: Case + PCB (open top)
-├── lna_fm_98mhz_in_enclosure.stl       # Mesh of Case + PCB
-├── lna_fm_98mhz_enclosure_with_lid.step# Complete Assembly: Case + PCB + Lid (closed)
-├── lna_fm_98mhz_enclosure_with_lid.stl # Mesh of complete closed enclosure
+├── enclosure/                          # Shielded Enclosure CAD & 3D Printing Files
+│   ├── README.md                       # Enclosure specs, assembly, and 3D print guide
+│   ├── h4m-keytop-24.step              # Base Case CAD (STEP) - Credits: pop aruaru
+│   ├── h4m-keytop-25.step              # Top Lid CAD (STEP)  - Credits: pop aruaru
+│   ├── h4m_case.stl                    # Base Case 3D printable mesh (STL)
+│   ├── h4m_lid.stl                     # Top Lid 3D printable mesh (STL)
+│   ├── lna_fm_98mhz_in_enclosure.step  # Open Assembly: PCB seated in base case (STEP)
+│   ├── lna_fm_98mhz_in_enclosure.stl   # Open Assembly mesh (STL)
+│   ├── lna_fm_98mhz_enclosure_with_lid.step # Closed Assembly: Case + PCB + Lid (STEP)
+│   └── lna_fm_98mhz_enclosure_with_lid.stl  # Closed Assembly mesh (STL)
+│
 ├── lna_fm_98mhz_assembly.step          # PCB + SMAs + Header assembly STEP
 ├── lna_fm_98mhz_assembly.stl           # PCB + SMAs + Header assembly STL
 ├── lna_fm_98mhz_pcb_no_connectors.step # Test-fit PCB model without connectors
@@ -394,7 +398,7 @@ kicad-cli pcb export drill -o gerbers/ --format excellon --excellon-zeros-format
 
 ## Acknowledgments & Credits
 
-- **Enclosure 3D Design**: Sincere credit and thanks to creator **pop aruaru** on [Printables.com](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case) for the original *[OpenSourceSDR Lab AMP case](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case)* CAD models (`h4m-keytop-24.step` and `h4m-keytop-25.step`).
+- **Enclosure 3D Design**: Sincere credit and thanks to creator **pop aruaru** on [Printables.com](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case) for the original *[OpenSourceSDR Lab AMP case](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case)* CAD models (located in [`enclosure/`](enclosure/)).
 - **Printables.com**: Thanks to the [Printables.com](https://www.printables.com/) community by Prusa for open hardware and 3D printing design sharing.
 - **openEMS & FreeCAD**: Thanks to Thorsten Liebig and the openEMS / FreeCAD Microwave Workbench developers for the open-source 3D FDTD EM simulation suite.
 - **Qucs-S**: Thanks to Vadim Kuznetsov and the Qucs-S development team for the RF circuit simulation platform and Qucsator solver.
