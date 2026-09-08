@@ -11,10 +11,10 @@ w, h = im.size
 fig, ax = plt.subplots(figsize=(18, 10.5), dpi=150)
 ax.imshow(im)
 
-# Calibration parameters for 34 mm x 29 mm board
-x0 = 418.0
-scale_x = 33.945
-y_rf = 587.9  # Y = 14.50 mm in KiCad
+# Calibration parameters for 34 mm x 29 mm board (Y_RF = 17.00 mm)
+x0 = 419.0
+scale_x = 33.92
+y_rf = 672.8  # Y = 17.00 mm in KiCad (aligned with enclosure SMA cutouts)
 
 # Ports coordinates in pixels
 p1_x = x0 + 0.0 * scale_x       # X = -17.0 mm openEMS (KiCad 0.0 mm)

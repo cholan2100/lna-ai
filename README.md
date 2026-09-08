@@ -41,8 +41,7 @@ The entire project—from schematic design and RF simulation to PCB layout, DRC/
 | **Stability Factor ($K$)** | $K > 1.0$ | **$K = 1.28$ (Unconditionally Stable)** | No oscillations across full spectrum |
 | **Input Impedance ($Z_{in}$)**| $50\ \Omega$ | **$50.8 - j1.8\ \Omega$** | Direct match to $50\ \Omega$ coaxial cables |
 | **Operating Voltage** | 3.3 V – 6.0 V | **5.0 V Nominal** | Low noise bias at $I_C \approx 7.5\text{ mA}$ |
-| **Power Options** | Dual | **Bias-Tee (RF OUT)** or **Battery/DC Header** | Selectable via solder jumper `J1` |
-| **PCB Dimensions** | Compact | **34.0 mm × 29.0 mm** | 4 × M2 plated mounting holes (OpenSourceSDRLab enclosure compatible) |
+| **PCB Dimensions** | Compact Curved | **34.0 mm × 29.0 mm ($R = 3.0\text{ mm}$ corner fillets)** | 4 × M2 plated mounting holes at (3.0, 3.0), (31.0, 3.0), (3.0, 26.0), (31.0, 26.0) mm (100% compliant with H4M / OpenSourceSDRLab enclosure `h4m-keytop-24.step`) |
 
 ---
 

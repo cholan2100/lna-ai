@@ -5,7 +5,7 @@
       "Application": "Pcbnew",
       "Version": "10.0.6"
     },
-    "CreationDate": "2026-09-08T15:26:31+05:30"
+    "CreationDate": "2026-09-08T17:57:05+05:30"
   },
   "GeneralSpecs": {
     "ProjectId": {
@@ -34,47 +34,47 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "lna_fm_98mhz-F_Cu.gtl",
+      "Path": "lna_fm_98mhz-F_Cu.gbr",
       "FileFunction": "Copper,L1,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "lna_fm_98mhz-B_Cu.gbl",
+      "Path": "lna_fm_98mhz-B_Cu.gbr",
       "FileFunction": "Copper,L2,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "lna_fm_98mhz-F_Paste.gtp",
+      "Path": "lna_fm_98mhz-F_Paste.gbr",
       "FileFunction": "SolderPaste,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "lna_fm_98mhz-B_Paste.gbp",
+      "Path": "lna_fm_98mhz-B_Paste.gbr",
       "FileFunction": "SolderPaste,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "lna_fm_98mhz-F_Silkscreen.gto",
+      "Path": "lna_fm_98mhz-F_Silkscreen.gbr",
       "FileFunction": "Legend,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "lna_fm_98mhz-B_Silkscreen.gbo",
+      "Path": "lna_fm_98mhz-B_Silkscreen.gbr",
       "FileFunction": "Legend,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "lna_fm_98mhz-F_Mask.gts",
+      "Path": "lna_fm_98mhz-F_Mask.gbr",
       "FileFunction": "SolderMask,Top",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "lna_fm_98mhz-B_Mask.gbs",
+      "Path": "lna_fm_98mhz-B_Mask.gbr",
       "FileFunction": "SolderMask,Bot",
       "FilePolarity": "Negative"
     },
     {
-      "Path": "lna_fm_98mhz-Edge_Cuts.gm1",
+      "Path": "lna_fm_98mhz-Edge_Cuts.gbr",
       "FileFunction": "Profile",
       "FilePolarity": "Positive"
     }

@@ -23,6 +23,7 @@ sub_width = 29.0
 height = 1.6
 w_trace = 1.5
 gap = 0.35
+y_rf = -2.5  # RF centerline aligned with enclosure SMA cutouts (Y = 17.0 mm on PCB)
 via_y = 2.5
 gnd_edge = w_trace / 2.0 + gap
 half_l = length / 2.0
@@ -40,12 +41,14 @@ def build_model(excited_port_idx):
     grid = csx.GetGrid()
     grid.SetDeltaUnit(1e-3)
 
-    # Grid lines for 34 mm x 29 mm board
+    # Grid lines for 34 mm x 29 mm board with offset RF trace at y_rf = -2.5 mm
     x_keys = [-22.0, -17.0, -16.5, -9.0, -8.5, 0.0, 6.0, 6.5, 16.5, 17.0, 22.0]
     for x in x_keys: grid.AddLine('x', x)
     grid.SmoothMeshLines('x', 0.6, 1.4)
 
-    y_keys = [-19.0, -14.5, -2.8, -2.2, -1.10, -0.75, 0.0, 0.75, 1.10, 2.2, 2.8, 14.5, 19.0]
+    y_keys = [-19.0, -14.5, y_rf - via_y - 0.3, y_rf - via_y + 0.3,
+              y_rf - gnd_edge, y_rf - w_trace/2.0, y_rf, y_rf + w_trace/2.0,
+              y_rf + gnd_edge, y_rf + via_y - 0.3, y_rf + via_y + 0.3, 14.5, 19.0]
     for y in y_keys: grid.AddLine('y', y)
     grid.SmoothMeshLines('y', 0.4, 1.4)
 
@@ -59,17 +62,17 @@ def build_model(excited_port_idx):
     # Ground planes
     gnd = csx.AddMetal('Ground')
     gnd.AddBox([-half_l, -half_w, 0.0], [half_l, half_w, 0.0], priority=1)
-    gnd.AddBox([-half_l, gnd_edge, height], [half_l, half_w, height], priority=2)
-    gnd.AddBox([-half_l, -half_w, height], [half_l, -gnd_edge, height], priority=2)
-    gnd.AddBox([-half_l, via_y - 0.3, 0.0], [half_l, via_y + 0.3, height], priority=2)
-    gnd.AddBox([-half_l, -via_y - 0.3, 0.0], [half_l, -via_y + 0.3, height], priority=2)
+    gnd.AddBox([-half_l, y_rf + gnd_edge, height], [half_l, half_w, height], priority=2)
+    gnd.AddBox([-half_l, -half_w, height], [half_l, y_rf - gnd_edge, height], priority=2)
+    gnd.AddBox([-half_l, y_rf + via_y - 0.3, 0.0], [half_l, y_rf + via_y + 0.3, height], priority=2)
+    gnd.AddBox([-half_l, y_rf - via_y - 0.3, 0.0], [half_l, y_rf - via_y + 0.3, height], priority=2)
 
     # Copper Traces
     cu = csx.AddConductingSheet('Copper', conductivity=copper_sigma, thickness=copper_t)
     # Input Trace: X = -17.0 to -8.5 mm (L = 8.5 mm)
-    cu.AddBox([-half_l, -w_trace / 2.0, height], [-8.5, w_trace / 2.0, height], priority=2)
+    cu.AddBox([-half_l, y_rf - w_trace / 2.0, height], [-8.5, y_rf + w_trace / 2.0, height], priority=2)
     # Output Trace: X = +6.0 to +17.0 mm (L = 11.0 mm)
-    cu.AddBox([6.0, -w_trace / 2.0, height], [half_l, w_trace / 2.0, height], priority=2)
+    cu.AddBox([6.0, y_rf - w_trace / 2.0, height], [half_l, y_rf + w_trace / 2.0, height], priority=2)
 
     # FDTD Solver
     fdtd = openEMS.openEMS(NrTS=25000, EndCriteria=1e-4)
@@ -78,10 +81,10 @@ def build_model(excited_port_idx):
     fdtd.SetCSX(csx)
 
     # 4 Lumped Ports
-    p1 = fdtd.AddLumpedPort(1, 50.0, [-half_l, -w_trace / 2.0, height], [-half_l + 0.5, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 1 else 0))
-    p2 = fdtd.AddLumpedPort(2, 50.0, [-8.5, -w_trace / 2.0, height], [-9.0, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 2 else 0))
-    p3 = fdtd.AddLumpedPort(3, 50.0, [6.0, -w_trace / 2.0, height], [6.5, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 3 else 0))
-    p4 = fdtd.AddLumpedPort(4, 50.0, [half_l, -w_trace / 2.0, height], [half_l - 0.5, w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 4 else 0))
+    p1 = fdtd.AddLumpedPort(1, 50.0, [-half_l, y_rf - w_trace / 2.0, height], [-half_l + 0.5, y_rf + w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 1 else 0))
+    p2 = fdtd.AddLumpedPort(2, 50.0, [-8.5, y_rf - w_trace / 2.0, height], [-9.0, y_rf + w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 2 else 0))
+    p3 = fdtd.AddLumpedPort(3, 50.0, [6.0, y_rf - w_trace / 2.0, height], [6.5, y_rf + w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 3 else 0))
+    p4 = fdtd.AddLumpedPort(4, 50.0, [half_l, y_rf - w_trace / 2.0, height], [half_l - 0.5, y_rf + w_trace / 2.0, 0.0], 2, excite=(1 if excited_port_idx == 4 else 0))
 
     return csx, fdtd, [p1, p2, p3, p4]
 
