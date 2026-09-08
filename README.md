@@ -42,7 +42,7 @@ The entire project—from schematic design and RF simulation to PCB layout, DRC/
 | **Input Impedance ($Z_{in}$)**| $50\ \Omega$ | **$50.8 - j1.8\ \Omega$** | Direct match to $50\ \Omega$ coaxial cables |
 | **Operating Voltage** | 3.3 V – 6.0 V | **5.0 V Nominal** | Low noise bias at $I_C \approx 7.5\text{ mA}$ |
 | **Power Options** | Dual | **Bias-Tee (RF OUT)** or **Battery/DC Header** | Selectable via solder jumper `J1` |
-| **PCB Dimensions** | Compact | **46.0 mm × 30.0 mm** | 4 × M3 mounting holes in corners |
+| **PCB Dimensions** | Compact | **34.0 mm × 29.0 mm** | 4 × M2 plated mounting holes (OpenSourceSDRLab enclosure compatible) |
 
 ---
 
@@ -98,7 +98,7 @@ This repository serves as a real-world demonstration of **pure programmatic agen
 | **RF Simulation & S-Parameters**| Reviewed simulated gain/match plots, asked for bandwidth analysis | Wrote Qucs netlists, executed `qucsator_rf`, parsed datasets, optimized $L/C$ values | **None (Headless CLI)** |
 | **Schematic Capture** | Verified component connectivity and reference designators | Programmed `generate_lna.py` to extract KiCad symbols and generate `.kicad_sch` | **None (Code Generated)** |
 | **Component Footprint Selection** | Requested standard 1.6 mm edge-mount SMA connector | Filtered KiCad libraries, selected Samtec `SMA-J-P-H-ST-EM1` footprint | **None (Programmatic)** |
-| **PCB Placement & Routing** | Provided board size constraints (46×30 mm, M3 mounting holes) | Wrote `build_clean_lna_pcb.py` via `pcbnew` Python API: placed footprints, routed CPWG lines, poured zones, stitched vias | **None (Pure Python API)** |
+| **PCB Placement & Routing** | Provided board size constraints (34×29 mm, M2 mounting holes) | Wrote `build_clean_lna_pcb.py` via `pcbnew` Python API: placed footprints, routed CPWG lines, poured zones, stitched vias | **None (Pure Python API)** |
 | **Design Rule Verification** | Prompted agent to verify electrical/physical integrity | Ran `kicad-cli sch erc` and `kicad-cli pcb drc`, resolved all clearance/trace errors programmatically | **None (CLI Automated)** |
 | **Production Gerbers & 3D CAD**| Requested manufacturing outputs | Exported RS-274X Gerbers, Excellon drill files, and 3D mechanical STEP model | **None (CLI Automated)** |
 | **Photomasks & Artwork Renders**| Requested 2D top copper and solder mask renders | Wrote `render_masks.py` using `pypdfium2` and `kicad-cli` to produce high-res PNG/PDF/SVG files | **None (Code Generated)** |
