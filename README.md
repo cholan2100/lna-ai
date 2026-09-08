@@ -29,14 +29,14 @@
 | Parameter | Specification | Achieved (3D EM + Circuit Co-Simulation) | Notes |
 | :--- | :--- | :--- | :--- |
 | **Center Frequency ($f_0$)** | 98.0 MHz | **98.0 MHz** | Centered in the FM broadcast band (88–108 MHz) |
-| **Forward Gain ($S_{21}$)** | $\ge 18\text{ dB}$ | **+19.73 dB** | Peak gain centered directly at 98.0 MHz ($\pm 0.2\text{ dB}$ flatness 96–100 MHz) |
-| **Input Return Loss ($S_{11}$)** | $\le -15\text{ dB}$ | **-31.33 dB (VSWR 1.056:1)** | Near-perfect $50\ \Omega$ match ($Z_{\text{in}} = 52.3 - j1.5\ \Omega$) |
-| **Reverse Isolation ($S_{12}$)**| $\le -20\text{ dB}$ | **-29.65 dB** | Grounded-base configuration eliminates Miller feedback |
-| **Output Reflection ($S_{22}$)** | Resonant Tank | **-0.38 dB** | High-impedance open-collector resonant match ($Z_{\text{out}} = 1.1 + j11.4\ \Omega$) |
+| **Forward Gain ($S_{21}$)** | $\ge 18\text{ dB}$ | **+19.87 dB** | Peak gain centered directly at 98.0 MHz ($\pm 0.2\text{ dB}$ flatness 96–100 MHz) |
+| **Input Return Loss ($S_{11}$)** | $\le -15\text{ dB}$ | **-28.06 dB (VSWR 1.082:1)** | Near-perfect $50\ \Omega$ match ($Z_{\text{in}} = 53.8 - j1.5\ \Omega$) |
+| **Reverse Isolation ($S_{12}$)**| $\le -20\text{ dB}$ | **-29.50 dB** | Grounded-base configuration eliminates Miller feedback |
+| **Output Reflection ($S_{22}$)** | Resonant Tank | **-0.33 dB** | High-impedance open-collector resonant match ($Z_{\text{out}} = 1.0 + j12.2\ \Omega$) |
 | **-3 dB Bandwidth** | 88.0 – 108.0 MHz | **14.0 MHz (92.0 – 106.0 MHz)** | Integrated LC bandpass pre-filter and tuned collector tank |
 | **Stability Criteria** | Stable across band | **$|\Delta| = 0.3210 < 1$, Unconditionally Stable into $50\ \Omega$** | No oscillation risk into standard $50\ \Omega$ load across 10–500 MHz |
-| **Physical Trace Losses** | Low-loss CPWG | **$0.130\text{ dB}$ (In, 8.5 mm), $0.146\text{ dB}$ (Out, 9.55 mm)** | 3D FDTD openEMS full-wave EM modeled |
-| **Board Cross-Talk Isolation** | $\ge 60\text{ dB}$ | **-76.40 dB ($S_{31}$ / $S_{41}$)** | Ground via stitching fence between input and output CPWG |
+| **Physical Trace Losses** | Low-loss CPWG | **$0.024\text{ dB}$ (In, 8.5 mm), $0.034\text{ dB}$ (Out, 11.0 mm)** | FreeCAD-Microwave full-wave 3D FDTD EM modeled |
+| **Board Cross-Talk Isolation** | $\ge 60\text{ dB}$ | **-108.82 dB ($S_{31}$), -108.08 dB ($S_{41}$)** | Ground via stitching fence between input and output CPWG |
 | **Operating Voltage** | 3.3 V – 6.0 V | **5.0 V Nominal** | $I_C \approx 7.5\text{ mA}, V_{CE} \approx 3.5\text{ V}$ |
 | **PCB Dimensions** | Compact Enclosure | **$34.00 \times 29.00\text{ mm}$ ($R = 3.0\text{ mm}$ corner fillets)** | Fits OpenSourceSDR Lab / H4M case (`h4m-keytop-24.step` + `h4m-keytop-25.step`) |
 
@@ -264,14 +264,19 @@ lna-ai/
 │   ├── benchmark_fdtd.py               # FDTD mesh speed benchmark
 │   └── em_simulation_run/              # FDTD mesh geometry and simulation dumps
 │
-├── freecad/                            # FreeCAD 3D CAD Mechanical Models & Scripts
+├── freecad/                            # FreeCAD 3D CAD & Microwave Workbench Models
+│   ├── lna_fm_98mhz_microwave.FCStd    # Native FreeCAD Microwave project (30 objects, Materials, 4 Ports)
+│   ├── build_freecad_microwave_model.py# FreeCAD document & Microwave setup generator script
+│   ├── run_full_board_freecad_em.py    # FreeCAD-Microwave openEMS 4-port EM solver engine
+│   ├── lna_board_full_4port.s4p        # 4-Port 3D EM Touchstone model solved via FreeCAD-Microwave
 │   ├── lna_fm_98mhz.step               # Default KiCad 3D mechanical STEP export
 │   ├── lna_fm_98mhz_assembly.step      # Complete PCB assembly with edge-mount SMAs
 │   ├── lna_fm_98mhz_assembly.stl       # 3D printable mesh of complete PCB assembly
 │   ├── lna_fm_98mhz_pcb_no_connectors.step # Test-fit PCB model without connectors
 │   ├── lna_fm_98mhz_pcb_no_connectors.stl  # 3D printable test-fit PCB model
-│   ├── lna_fm_98mhz_bare_board.stl     # Bare FR-4 substrate outline
-│   └── run_full_board_freecad_em.py    # FreeCAD Microwave Workbench EM script
+│   └── lna_fm_98mhz_bare_board.stl     # Bare FR-4 substrate outline
+│
+├── run_pipeline.py                     # Single-command master orchestrator (KiCad -> FreeCAD -> Qucs-S)
 │
 ├── enclosure/                          # Shielded Enclosure CAD & 3D Printing Files
 │   ├── README.md                       # Enclosure specs, assembly, and 3D print guide
@@ -330,15 +335,40 @@ pip install scikit-rf matplotlib numpy pypdfium2 Pillow
 
 ## Reproduction & Automation Commands
 
-All hardware artifacts can be re-synthesized and verified via automated CLI commands:
+All hardware artifacts and simulations can be executed via a single master command:
 
-### 1. Synthesize PCB Layout (KiCad `pcbnew` Python API)
+### 🌟 Single-Command Master Pipeline
+```bash
+# Runs full verification, builds FreeCAD model, performs Qucs-S co-sim, and renders plots
+& "D:\Programs\FreeCAD\bin\python.exe" run_pipeline.py
+
+# Optional: Re-run the full 3D FDTD EM solver through FreeCAD-Microwave / openEMS (~25 min)
+& "D:\Programs\FreeCAD\bin\python.exe" run_pipeline.py --solve-em
+```
+
+---
+
+### Individual Step Commands
+
+### 1. Build FreeCAD Microwave Workbench 3D Project (.FCStd)
+```bash
+cd freecad
+& "D:\Programs\FreeCAD\bin\python.exe" build_freecad_microwave_model.py
+```
+
+### 2. Run Full-Board 3D FDTD EM Simulation (FreeCAD-Microwave)
+```bash
+cd freecad
+& "D:\Programs\FreeCAD\bin\python.exe" run_full_board_freecad_em.py
+```
+
+### 3. Synthesize PCB Layout (KiCad `pcbnew` Python API)
 ```bash
 cd kicad
 & "D:\Programs\KiCad\bin\python.exe" build_clean_lna_pcb.py
 ```
 
-### 2. Run DRC Checks
+### 4. Run DRC Checks
 ```bash
 cd kicad
 kicad-cli pcb drc --severity-all --output drc_report.json --format json lna_fm_98mhz.kicad_pcb

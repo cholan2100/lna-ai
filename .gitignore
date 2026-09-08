@@ -16,6 +16,7 @@ venv/
 *.bak
 ~*.lck
 *.tmp
+*.FCBak
 
 # Editor & IDE settings
 .vscode/

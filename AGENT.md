@@ -204,14 +204,28 @@ When writing or executing automation scripts for this project, keep the followin
 - **Behavior**: Generic SMA footprints are often designed for 1.0 mm boards or through-hole vertical orientation. Using an incorrect footprint causes the PCB edge cutout to overlap or pins to fail physical assembly.
 - **Specification**: Use `Connector_Coaxial:SMA_Samtec_SMA-J-P-H-ST-EM1_EdgeMount`. Its ground tang gap is exactly $1.6\text{ mm}$ ($62\text{ mil}$), perfectly matching the FR-4 board edge.
 
-### 4.5 Python Path on Windows
-- **Behavior**: Running `python` in Windows PowerShell may invoke the Windows Store Python stub if system Python is not in PATH.
-- **Solution**: Always target KiCad's bundled Python interpreter:
-  `& "D:\Programs\KiCad\bin\python.exe" <script.py>`
+### 4.6 FreeCAD-Microwave Workbench Automation & openEMS
+- **Python Environment**: FreeCAD provides its own Python environment at `D:\Programs\FreeCAD\bin\python.exe` which contains `FreeCAD`, `Part`, the `Microwave` workbench module (`D:\Programs\FreeCAD\Mod\Microwave`), `openEMS`, `CSXCAD`, `skrf`, `numpy`, and `matplotlib`.
+- **Excitation Length Constraint**: FreeCAD-Microwave's preflight check (`preflight.check(problem)`) verifies that `max_timesteps` is long enough to fully contain the time-domain Gaussian excitation pulse at the specified bandwidth. At 98 MHz with a 2.5 GHz upper band limit, the pulse is ~16,400 timesteps. Set `Termination(max_timesteps=60000, end_criteria=1e-4)` to satisfy the solver preflight constraint.
+- **Active Component Cavity**: Do NOT place solid top ground conductor across the active component area ($X = -8.5\text{ mm}$ to $+6.0\text{ mm}$); doing so shorts the internal lumped ports (Port 2 and Port 3) to ground and results in total reflection ($S_{11} \approx 0\text{ dB}$, $S_{21} \approx -53\text{ dB}$).
+- **Qucsator Touchstone Relative Path**: `qucsator_rf.exe` expects Touchstone `.s4p` files locally in the working directory without drive letters or forward slashes in `File="lna_board_full_4port.s4p"`. Always write copies to `freecad/`, `qucs-sim/`, and `openems/`.
 
 ---
 
-## 5. Re-Tuning Protocol for Alternative RF Bands
+## 5. Master Pipeline Orchestration (`run_pipeline.py`)
+
+A single master script at the repository root orchestrates all toolchain stages:
+```bash
+# Complete verification, FreeCAD model generation, Qucs-S co-sim, and plot rendering
+& "D:\Programs\FreeCAD\bin\python.exe" run_pipeline.py
+
+# Optional: Re-run the full 3D FDTD EM solver via FreeCAD-Microwave (~25 min)
+& "D:\Programs\FreeCAD\bin\python.exe" run_pipeline.py --solve-em
+```
+
+---
+
+## 6. Re-Tuning Protocol for Alternative RF Bands
 
 An agent or developer can retune this LNA design for another center frequency in minutes. Follow this procedure:
 
@@ -226,7 +240,7 @@ An agent or developer can retune this LNA design for another center frequency in
 
 ### Execution Steps
 1. **Update Netlist**: Edit component values in `qucs-sim/lna_fm_98mhz_qucs_cpwg.net` or `qucs-sim/lna_fm_98mhz_full_board_cosim.net`.
-2. **Re-run Simulation**: Run `cd qucs-sim && python run_qucs_simulation.py` and verify $S_{21} > 18\text{ dB}$ and $S_{11} < -20\text{ dB}$.
+2. **Re-run Simulation**: Run `& "D:\Programs\FreeCAD\bin\python.exe" run_pipeline.py` and verify $S_{21} > 18\text{ dB}$ and $S_{11} < -20\text{ dB}$.
 3. **Update PCB Generator**: In `kicad/build_clean_lna_pcb.py`, update component values passed to `place_fp()`.
 4. **Re-synthesize PCB**: Run `cd kicad && & "D:\Programs\KiCad\bin\python.exe" build_clean_lna_pcb.py`.
 5. **Verify DRC**: Run `cd kicad && kicad-cli pcb drc lna_fm_98mhz.kicad_pcb` (ensure 0 violations).
