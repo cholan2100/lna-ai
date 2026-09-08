@@ -1,4 +1,4 @@
-﻿import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 from parse_qucs import parse_qucs_dat
@@ -6,8 +6,11 @@ import skrf as rf
 
 print("Generating full-board co-simulation comparison plots...")
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+repo_dir = os.path.dirname(script_dir)
+
 # 1. Load data
-freqs_fb, data_fb = parse_qucs_dat("lna_fm_98mhz_full_board_cosim.dat")
+freqs_fb, data_fb = parse_qucs_dat(os.path.join(script_dir, "lna_fm_98mhz_full_board_cosim.dat"))
 freqs_fb = np.array(freqs_fb) / 1e6 # MHz
 
 s11_fb = np.array(data_fb["S[1,1]"])
@@ -16,19 +19,19 @@ s12_fb = np.array(data_fb["S[1,2]"])
 s22_fb = np.array(data_fb["S[2,2]"])
 
 # Load Option A data
-freqs_oa, data_oa = parse_qucs_dat("lna_fm_98mhz_cosim.dat")
+freqs_oa, data_oa = parse_qucs_dat(os.path.join(script_dir, "lna_fm_98mhz_cosim.dat"))
 freqs_oa = np.array(freqs_oa) / 1e6 # MHz
 s11_oa = np.array(data_oa["S[1,1]"])
 s21_oa = np.array(data_oa["S[2,1]"])
 
 # Load Baseline data
-freqs_base, data_base = parse_qucs_dat("lna_fm_98mhz_qucs.dat")
+freqs_base, data_base = parse_qucs_dat(os.path.join(script_dir, "lna_fm_98mhz_qucs.dat"))
 freqs_base = np.array(freqs_base) / 1e6 # MHz
 s11_base = np.array(data_base["S[1,1]"])
 s21_base = np.array(data_base["S[2,1]"])
 
 # Load 4-port S-parameters directly for cross-talk
-nw_4p = rf.Network("lna_board_full_4port.s4p")
+nw_4p = rf.Network(os.path.join(script_dir, "lna_board_full_4port.s4p"))
 f_4p = nw_4p.f / 1e6
 s31_iso = 20 * np.log10(np.abs(nw_4p.s[:, 2, 0]))
 s41_iso = 20 * np.log10(np.abs(nw_4p.s[:, 3, 0]))
@@ -118,6 +121,6 @@ plt.suptitle("98 MHz FM Low-Noise Amplifier: Full-Board 3D EM Co-Simulation (ope
              fontsize=14, fontweight='bold', y=0.98)
 
 plt.tight_layout(rect=[0, 0, 1, 0.95])
-out_img = os.path.join("renders", "lna_full_board_cosim_results.png")
+out_img = os.path.join(repo_dir, "renders", "lna_full_board_cosim_results.png")
 plt.savefig(out_img, bbox_inches='tight')
 print(f"Saved comparison plot to: {out_img}")

@@ -4,8 +4,12 @@ import matplotlib.patches as patches
 from PIL import Image
 import numpy as np
 
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+repo_dir = os.path.dirname(script_dir)
+
 # Load base image
-im = Image.open('renders/top_render.png')
+im = Image.open(os.path.join(repo_dir, 'renders', 'top_render.png'))
 w, h = im.size
 
 fig, ax = plt.subplots(figsize=(18, 10.5), dpi=150)
@@ -99,7 +103,7 @@ ax.set_ylim(h, 0)
 ax.axis('off')
 plt.tight_layout()
 
-out_path = 'renders/openems_ports_pcb_overlay.png'
+out_path = os.path.join(repo_dir, 'renders', 'openems_ports_pcb_overlay.png')
 plt.savefig(out_path, bbox_inches='tight', pad_inches=0.1, dpi=160)
 plt.close()
 print(f'Successfully generated {out_path}')

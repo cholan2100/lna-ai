@@ -2,7 +2,9 @@ import cmath
 import numpy as np
 from parse_qucs import parse_qucs_dat
 
-freqs, data = parse_qucs_dat('lna_fm_98mhz_qucs_cpwg.dat')
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+freqs, data = parse_qucs_dat(os.path.join(script_dir, 'lna_fm_98mhz_qucs_cpwg.dat'))
 print(f"Frequency range: {freqs[0]/1e6:.1f} to {freqs[-1]/1e6:.1f} MHz, {len(freqs)} points\n")
 
 header = f"{'Freq(MHz)':<10} {'|S11|':<8} {'|S21|':<8} {'|S12|':<8} {'|S22|':<8} {'K':<8} {'|Delta|':<8} {'mu':<8} {'mu_prime':<8}"

@@ -1,4 +1,4 @@
-﻿import subprocess, os
+import subprocess, os
 
 netlist_content = """# Qucs Netlist for 98 MHz Common Base LNA with Full-Board 4-Port 3D EM Co-Simulation
 SUBST:Subst1 er=4.5 h=1.6mm t=35um tand=0.02 rho=1.72e-8 D=1.5e-6
@@ -53,15 +53,16 @@ R:R_BT_DUMMY n_l4_dc gnd R=100k
 .SP:SP1 Type=lin Start=10 MHz Stop=500 MHz Points=491
 """
 
-net_file = "lna_fm_98mhz_full_board_cosim.net"
-dat_file = "lna_fm_98mhz_full_board_cosim.dat"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+net_file = os.path.join(script_dir, "lna_fm_98mhz_full_board_cosim.net")
+dat_file = os.path.join(script_dir, "lna_fm_98mhz_full_board_cosim.dat")
 
 with open(net_file, "w", newline="\n") as f:
     f.write(netlist_content)
 
 qucsator = r"D:\Programs\Qucs-S\bin\qucsator_rf.exe"
 print(f"Running qucsator on {net_file}...")
-res = subprocess.run([qucsator, "-i", net_file, "-o", dat_file], capture_output=True, text=True)
+res = subprocess.run([qucsator, "-i", "lna_fm_98mhz_full_board_cosim.net", "-o", "lna_fm_98mhz_full_board_cosim.dat"], cwd=script_dir, capture_output=True, text=True)
 print("Return code:", res.returncode)
 print("STDOUT:\n", res.stdout)
 if res.stderr:

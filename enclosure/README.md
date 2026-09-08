@@ -60,3 +60,4 @@ For DIY fabrication of the base case (`h4m_case.stl`) and lid (`h4m_lid.stl`):
 - **Supports**: None required when printed flat on the base and top face.
 - **RF Shielding Enhancement**:
   - For maximum RF shielding in high-interference VHF environments, line the inside walls and lid with adhesive copper or aluminum shielding tape, ensuring contact with the PCB edge ground plating or SMA connector ground flanges.
+

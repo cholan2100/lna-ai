@@ -103,21 +103,22 @@ Using Wheeler/Schneider conformal mapping for CPWG:
 
 ## 3. Toolchain & Script Reference
 
-### 3.1 `run_qucs_simulation.py` & `parse_qucs.py`
-- **Purpose**: Headless execution and evaluation of RF S-parameters.
+### 3.1 `qucs-sim/run_qucs_simulation.py` & `qucs-sim/run_full_board_cosim.py`
+- **Purpose**: Headless execution and evaluation of RF S-parameters and 3D EM co-simulation.
 - **Underlying Engine**: `qucsator_rf.exe` (Qucs-S RF solver).
-- **Inputs**: `lna_fm_98mhz_qucs_cpwg.net` (SPICE/Qucs netlist with CPWG transmission lines).
+- **Inputs**: `qucs-sim/lna_fm_98mhz_full_board_cosim.net` & `qucs-sim/lna_board_full_4port.s4p`.
 - **Outputs**:
-  - `lna_fm_98mhz_qucs_cpwg.dat` (raw binary/text dataset).
+  - `qucs-sim/lna_fm_98mhz_full_board_cosim.dat` (raw solved dataset).
   - Formatted ASCII performance table with $S_{21}, S_{11}, S_{22}, S_{12}, K\text{-factor}, Z_{in}$.
-  - Touchstone `lna_fm_98mhz_cpwg.s2p` file.
 - **CLI Usage**:
   ```bash
-  python run_qucs_simulation.py
+  cd qucs-sim
+  & "D:\Programs\FreeCAD\bin\python.exe" run_full_board_cosim.py
+  & "D:\Programs\FreeCAD\bin\python.exe" plot_full_board_cosim_results.py
   ```
 
-### 3.2 `generate_lna.py`
-- **Purpose**: Programmatic synthesis of the complete KiCad 10 schematic (`lna_fm_98mhz.kicad_sch`).
+### 3.2 `kicad/generate_lna.py`
+- **Purpose**: Programmatic synthesis of the complete KiCad 10 schematic (`kicad/lna_fm_98mhz.kicad_sch`).
 - **Dependencies**: Uses `kicad-mcp-server` symbol extractors located at `D:\Programs\kicad-mcp-server\src`.
 - **How it works**:
   1. Searches stock KiCad symbol libraries (`Device.kicad_sym`, `Transistor_BJT.kicad_sym`, `Connector.kicad_sym`, etc.).
@@ -127,29 +128,31 @@ Using Wheeler/Schneider conformal mapping for CPWG:
   5. Validates against electrical rules check (ERC) so 0 errors/warnings are produced.
 - **CLI Usage**:
   ```bash
+  cd kicad
   python generate_lna.py
   ```
 
-### 3.3 `build_clean_lna_pcb.py`
-- **Purpose**: Programmatic generation of the KiCad 10 PCB layout (`lna_fm_98mhz.kicad_pcb`).
+### 3.3 `kicad/build_clean_lna_pcb.py`
+- **Purpose**: Programmatic generation of the KiCad 10 PCB layout (`kicad/lna_fm_98mhz.kicad_pcb`).
 - **Underlying Engine**: KiCad's bundled Python `pcbnew` library (`D:\Programs\KiCad\bin\python.exe`).
 - **How it works**:
   1. Creates a new `pcbnew.BOARD()` object and configures design rules (0.35 mm clearance, 0.35 mm trace min).
-  2. Creates the `Edge.Cuts` boundary (46.0 mm × 30.0 mm).
-  3. Dynamically loads footprints from KiCad's official libraries (`FootprintLoad`), including Samtec edge-mount SMA connectors, SOT-23, and 0805 passives.
-  4. Places M3 mounting holes at $(x, y) = (3.5, 3.5), (42.5, 3.5), (3.5, 26.5), (42.5, 26.5)$.
+  2. Creates the contoured `Edge.Cuts` boundary (34.0 mm × 29.0 mm with 4× R=3.0mm fillets).
+  3. Dynamically loads footprints from KiCad's official libraries (`FootprintLoad`), including Samtec edge-mount SMA connectors, SOT-23, and 0805/0603 passives.
+  4. Places M2 mounting holes at $(x, y) = (3.0, 3.0), (31.0, 3.0), (3.0, 26.0), (31.0, 26.0)\text{ mm}$.
   5. Assigns net connections to every pad (`FindNet`, `SetNet`).
-  6. Routes CPWG 50 $\Omega$ transmission lines ($W = 1.5\text{ mm}$, $S = 0.35\text{ mm}$) and DC/bias tracks.
+  6. Routes CPWG 50 $\Omega$ transmission lines ($W = 1.5\text{ mm}$, $S = 0.35\text{ mm}$, $Y_{\text{RF}} = 17.0\text{ mm}$) and DC/bias tracks.
   7. Creates top and bottom copper fill zones (`F.Cu`, `B.Cu`) assigned to `GND` with thermal reliefs and refilling.
   8. Instantiates stitching vias across the ground plane and along the CPWG line perimeter.
-  9. Saves the fully routed `.kicad_pcb` file.
+  9. Saves the fully routed `.kicad_pcb` file in `kicad/`.
 - **CLI Usage**:
   ```bash
+  cd kicad
   & "D:\Programs\KiCad\bin\python.exe" build_clean_lna_pcb.py
   ```
 
-### 3.4 `render_masks.py`
-- **Purpose**: Autonomous rendering of 2D engineering artwork, solder masks, and B&W photomasks.
+### 3.4 `kicad/render_masks.py`
+- **Purpose**: Autonomous rendering of 2D engineering artwork, solder masks, and B&W photomasks into `renders/`.
 - **Dependencies**: `kicad-cli`, `pypdfium2`, `Pillow`, `numpy`.
 - **How it works**:
   1. Calls `kicad-cli pcb export pdf` and `kicad-cli pcb export svg` for targeted layer subsets (`F.Cu`, `F.Mask`, `F.Silkscreen`, `Edge.Cuts`).
@@ -159,7 +162,17 @@ Using Wheeler/Schneider conformal mapping for CPWG:
   5. Saves both high-res raster PNGs and vector SVGs/PDFs in `renders/`.
 - **CLI Usage**:
   ```bash
+  cd kicad
   & "D:\Programs\KiCad\bin\python.exe" render_masks.py
+  ```
+
+### 3.5 `openems/generate_lna_full_board_s4p.py`
+- **Purpose**: openEMS 3D FDTD electromagnetic solver integration for 4-port full-board S-parameters.
+- **Dependencies**: openEMS, FreeCAD Microwave Workbench (`Microwave.Solvers.openems`).
+- **CLI Usage**:
+  ```bash
+  cd openems
+  & "D:\Programs\FreeCAD\bin\python.exe" generate_lna_full_board_s4p.py
   ```
 
 ---
@@ -212,10 +225,11 @@ An agent or developer can retune this LNA design for another center frequency in
 | **70cm Amateur**| 433 MHz | 5.6 nH | 22 pF | 33 nH | 1.8 pF | 2.2 pF | 1.5 mm / 0.35 mm |
 
 ### Execution Steps
-1. **Update Netlist**: Edit component values in `lna_fm_98mhz_qucs_cpwg.net`.
-2. **Re-run Simulation**: Run `python run_qucs_simulation.py` and verify $S_{21} > 18\text{ dB}$ and $S_{11} < -20\text{ dB}$.
-3. **Update PCB Generator**: In `build_clean_lna_pcb.py`, update component values passed to `place_fp()`.
-4. **Re-synthesize PCB**: Run `& "D:\Programs\KiCad\bin\python.exe" build_clean_lna_pcb.py`.
-5. **Verify DRC**: Run `kicad-cli pcb drc lna_fm_98mhz.kicad_pcb` (ensure 0 violations).
-6. **Export Production Files**: Re-run `render_masks.py` and Gerber export commands.
+1. **Update Netlist**: Edit component values in `qucs-sim/lna_fm_98mhz_qucs_cpwg.net` or `qucs-sim/lna_fm_98mhz_full_board_cosim.net`.
+2. **Re-run Simulation**: Run `cd qucs-sim && python run_qucs_simulation.py` and verify $S_{21} > 18\text{ dB}$ and $S_{11} < -20\text{ dB}$.
+3. **Update PCB Generator**: In `kicad/build_clean_lna_pcb.py`, update component values passed to `place_fp()`.
+4. **Re-synthesize PCB**: Run `cd kicad && & "D:\Programs\KiCad\bin\python.exe" build_clean_lna_pcb.py`.
+5. **Verify DRC**: Run `cd kicad && kicad-cli pcb drc lna_fm_98mhz.kicad_pcb` (ensure 0 violations).
+6. **Export Production Files**: Re-run `cd kicad && & "D:\Programs\KiCad\bin\python.exe" render_masks.py` and Gerber export commands.
+
 

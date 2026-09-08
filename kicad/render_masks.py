@@ -23,7 +23,7 @@ from PIL import Image, ImageOps
 
 KICAD_CLI = r"D:\Programs\KiCad\bin\kicad-cli.exe"
 PCB_PATH = Path(__file__).resolve().parent / "lna_fm_98mhz.kicad_pcb"
-RENDERS_DIR = Path(__file__).resolve().parent / "renders"
+RENDERS_DIR = Path(__file__).resolve().parent.parent / "renders"
 
 def export_pdfs():
     """Export vector PDFs from KiCad CLI for all required mask layers."""

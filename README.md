@@ -178,11 +178,11 @@ The repository includes both native STEP CAD files and 3D printing STL files for
 | [`enclosure/lna_fm_98mhz_in_enclosure.stl`](enclosure/lna_fm_98mhz_in_enclosure.stl) | STL | 3D printable mesh of open enclosure assembly |
 | [`enclosure/lna_fm_98mhz_enclosure_with_lid.step`](enclosure/lna_fm_98mhz_enclosure_with_lid.step) | STEP | Complete closed assembly: Base Case + PCB + Lid |
 | [`enclosure/lna_fm_98mhz_enclosure_with_lid.stl`](enclosure/lna_fm_98mhz_enclosure_with_lid.stl) | STL | 3D printable mesh of fully assembled closed enclosure |
-| [`lna_fm_98mhz_assembly.step`](lna_fm_98mhz_assembly.step) | STEP | Full PCB assembly with edge-mount SMAs and header pins |
-| [`lna_fm_98mhz_assembly.stl`](lna_fm_98mhz_assembly.stl) | STL | 3D printable mesh of complete PCB assembly |
-| [`lna_fm_98mhz_pcb_no_connectors.step`](lna_fm_98mhz_pcb_no_connectors.step) | STEP | Bare board with components (no connectors) for physical test-fitting |
-| [`lna_fm_98mhz_pcb_no_connectors.stl`](lna_fm_98mhz_pcb_no_connectors.stl) | STL | 3D printable mesh of bare board with components |
-| [`lna_fm_98mhz_bare_board.stl`](lna_fm_98mhz_bare_board.stl) | STL | Bare FR-4 substrate outline ($34 \times 29\text{ mm}, R = 3\text{ mm}$) |
+| [`freecad/lna_fm_98mhz_assembly.step`](freecad/lna_fm_98mhz_assembly.step) | STEP | Full PCB assembly with edge-mount SMAs and header pins |
+| [`freecad/lna_fm_98mhz_assembly.stl`](freecad/lna_fm_98mhz_assembly.stl) | STL | 3D printable mesh of complete PCB assembly |
+| [`freecad/lna_fm_98mhz_pcb_no_connectors.step`](freecad/lna_fm_98mhz_pcb_no_connectors.step) | STEP | Bare board with components (no connectors) for physical test-fitting |
+| [`freecad/lna_fm_98mhz_pcb_no_connectors.stl`](freecad/lna_fm_98mhz_pcb_no_connectors.stl) | STL | 3D printable mesh of bare board with components |
+| [`freecad/lna_fm_98mhz_bare_board.stl`](freecad/lna_fm_98mhz_bare_board.stl) | STL | Bare FR-4 substrate outline ($34 \times 29\text{ mm}, R = 3\text{ mm}$) |
 
 ### Mechanical Tolerances & Mounting
 - **Board Outline**: $34.00\text{ mm} \times 29.00\text{ mm}$ ($R = 3.0\text{ mm}$ corner radius).
@@ -211,11 +211,67 @@ lna-ai/
 ├── README.md                           # Master project documentation
 ├── AGENT.md                            # Autonomous RF engineering blueprint & manual
 ├── requirements.txt                    # Python environment requirements
+├── .gitignore                          # Build & temporary files ignore list
 │
-├── lna_fm_98mhz.kicad_pro              # KiCad 10 project file
-├── lna_fm_98mhz.kicad_sch              # KiCad schematic (100% code synthesized)
-├── lna_fm_98mhz.kicad_pcb              # KiCad PCB layout (34x29mm, 50Ω CPWG, DRC clean)
-├── lna_fm_98mhz.step                   # Default 3D mechanical STEP export
+├── kicad/                              # KiCad 10 Schematic, PCB Layout & Manufacturing
+│   ├── lna_fm_98mhz.kicad_pro          # KiCad 10 project file
+│   ├── lna_fm_98mhz.kicad_sch          # KiCad schematic (100% code synthesized)
+│   ├── lna_fm_98mhz.kicad_pcb          # KiCad PCB layout (34x29mm, 50Ω CPWG, DRC clean)
+│   ├── fp-lib-table                    # Footprint library table
+│   ├── sym-lib-table                   # Symbol library table
+│   ├── build_clean_lna_pcb.py          # Programmatic PCB layout generator (pcbnew API)
+│   ├── generate_lna.py                 # Programmatic schematic generator (MCP tool)
+│   ├── render_masks.py                 # Headless vector & raster mask exporter
+│   ├── drc_report.json                 # Automated kicad-cli DRC report (0 errors)
+│   ├── lna_fm_98mhz-drc.rpt            # Text DRC report
+│   ├── lna_fm_98mhz-erc.rpt            # Electrical rules check report
+│   └── gerbers/                        # Production Gerbers & Excellon Drills
+│       ├── lna_fm_98mhz-F_Cu.gbr       # Front copper layer
+│       ├── lna_fm_98mhz-B_Cu.gbr       # Back copper ground plane
+│       ├── lna_fm_98mhz-F_Mask.gbr     # Front solder mask
+│       ├── lna_fm_98mhz-B_Mask.gbr     # Back solder mask
+│       ├── lna_fm_98mhz-F_Silkscreen.gbr # Front silkscreen
+│       ├── lna_fm_98mhz-Edge_Cuts.gbr  # 34x29mm curved board outline
+│       ├── lna_fm_98mhz.drl            # Plated & non-plated drill holes
+│       └── lna_fm_98mhz_gerbers.zip    # Zipped manufacturing pack ready for fabricators
+│
+├── qucs-sim/                           # Qucs-S Circuit Co-Simulation & Stability Analysis
+│   ├── lna_fm_98mhz_full_board_cosim.sch # Qucs-S co-simulation schematic
+│   ├── lna_fm_98mhz_full_board_cosim.net # Qucsator co-simulation netlist
+│   ├── lna_fm_98mhz_full_board_cosim.dat # Solved S-parameter dataset (10 - 500 MHz)
+│   ├── lna_fm_98mhz_full_board_cosim.dpl # Qucs-S co-simulation diagram display
+│   ├── lna_board_full_4port.s4p        # 4-Port 3D EM Touchstone model for Qucsator
+│   ├── lna_fm_98mhz_cosim.sch / .net   # Single-line EM co-simulation models
+│   ├── lna_fm_98mhz_qucs.sch / .net    # Lumped schematic baseline models
+│   ├── lna_fm_98mhz_qucs_cpwg.net      # Analytic CPWG models
+│   ├── lna_fm_98mhz_ngspice.cir        # SPICE netlist
+│   ├── run_full_board_cosim.py         # Headless Qucsator co-simulation runner
+│   ├── plot_full_board_cosim_results.py# S-parameter & stability comparison plotter
+│   ├── plot_smith_and_cartesian.py     # Cartesian & Smith chart plotter
+│   ├── plot_stability_smith.py         # Rollett factor & stability circles plotter
+│   ├── calculate_stability.py          # Edwards-Sinsky mu factors calculator
+│   └── verify_stability.py             # Quick stability criteria validator
+│
+├── openems/                            # openEMS 3D FDTD Full-Wave EM Simulations
+│   ├── lna_board_full_4port.s4p        # Calibrated 4-port 3D EM Touchstone model
+│   ├── lna_cpwg_in_8p5mm_em.s2p        # Input 8.5mm CPWG 2-port Touchstone model
+│   ├── lna_cpwg_out1_9p55mm_em.s2p     # Output 9.55mm CPWG 2-port Touchstone model
+│   ├── simulate_full_board_4port.py    # 4-port FDTD full-board simulator
+│   ├── simulate_lna_em.py              # CPWG transmission line EM simulator
+│   ├── generate_lna_full_board_s4p.py  # 4-port S-parameter matrix synthesizer
+│   ├── generate_ports_overlay.py       # Generates EM port overlay diagram on PCB
+│   ├── export_500mhz_em_results.py     # Multi-frequency EM results exporter
+│   ├── benchmark_fdtd.py               # FDTD mesh speed benchmark
+│   └── em_simulation_run/              # FDTD mesh geometry and simulation dumps
+│
+├── freecad/                            # FreeCAD 3D CAD Mechanical Models & Scripts
+│   ├── lna_fm_98mhz.step               # Default KiCad 3D mechanical STEP export
+│   ├── lna_fm_98mhz_assembly.step      # Complete PCB assembly with edge-mount SMAs
+│   ├── lna_fm_98mhz_assembly.stl       # 3D printable mesh of complete PCB assembly
+│   ├── lna_fm_98mhz_pcb_no_connectors.step # Test-fit PCB model without connectors
+│   ├── lna_fm_98mhz_pcb_no_connectors.stl  # 3D printable test-fit PCB model
+│   ├── lna_fm_98mhz_bare_board.stl     # Bare FR-4 substrate outline
+│   └── run_full_board_freecad_em.py    # FreeCAD Microwave Workbench EM script
 │
 ├── enclosure/                          # Shielded Enclosure CAD & 3D Printing Files
 │   ├── README.md                       # Enclosure specs, assembly, and 3D print guide
@@ -228,38 +284,9 @@ lna-ai/
 │   ├── lna_fm_98mhz_enclosure_with_lid.step # Closed Assembly: Case + PCB + Lid (STEP)
 │   └── lna_fm_98mhz_enclosure_with_lid.stl  # Closed Assembly mesh (STL)
 │
-├── lna_fm_98mhz_assembly.step          # PCB + SMAs + Header assembly STEP
-├── lna_fm_98mhz_assembly.stl           # PCB + SMAs + Header assembly STL
-├── lna_fm_98mhz_pcb_no_connectors.step # Test-fit PCB model without connectors
-├── lna_fm_98mhz_pcb_no_connectors.stl  # 3D printable test-fit PCB model
-├── lna_fm_98mhz_bare_board.stl         # Bare FR-4 substrate mesh
-│
-├── gerbers/                            # Production Gerbers & Excellon Drills
-│   ├── lna_fm_98mhz-F_Cu.gbr           # Front copper layer
-│   ├── lna_fm_98mhz-B_Cu.gbr           # Back copper ground plane
-│   ├── lna_fm_98mhz-F_Mask.gbr         # Front solder mask
-│   ├── lna_fm_98mhz-B_Mask.gbr         # Back solder mask
-│   ├── lna_fm_98mhz-F_Silkscreen.gbr   # Front silkscreen
-│   ├── lna_fm_98mhz-Edge_Cuts.gbr      # 34x29mm curved board outline
-│   └── lna_fm_98mhz.drl                # Plated & non-plated drill holes
-├── lna_fm_98mhz_gerbers.zip            # Zipped manufacturing pack ready for fabricators
-├── drc_report.json                     # Automated kicad-cli DRC report (0 errors)
-├── lna_fm_98mhz-drc.rpt                # Text DRC report
-│
-├── lna_board_full_4port.s4p            # 3D EM 4-Port Touchstone model from openEMS
-├── lna_fm_98mhz_full_board_cosim.net   # Qucsator co-simulation netlist
-├── lna_fm_98mhz_full_board_cosim.dat   # Solved S-parameter dataset (10 - 500 MHz)
-├── lna_fm_98mhz_full_board_cosim.sch   # Qucs-S co-simulation schematic
-├── lna_fm_98mhz_full_board_cosim.dpl   # Qucs-S co-simulation diagram display
-├── lna_cpwg_in_8p5mm_em.s2p            # openEMS length-modeled input CPWG Touchstone
-├── lna_cpwg_out1_9p55mm_em.s2p         # openEMS length-modeled output CPWG Touchstone
-│
-├── build_clean_lna_pcb.py              # Autonomous PCB generator via pcbnew Python API
-├── generate_lna_full_board_s4p.py      # openEMS 4-port S-parameter synthesizer
-├── run_full_board_cosim.py             # Headless Qucsator co-simulation runner & plotter
-├── verify_stability.py                 # Rollett stability factor & RF metrics evaluator
-├── generate_ports_overlay.py           # Generates 3D EM port overlay on PCB layout
-├── render_masks.py                     # Headless vector & raster mask generation script
+├── docs/                               # Technical Design & Analysis Reports
+│   ├── STABILITY_ANALYSIS.md           # Rollett & Edwards-Sinsky stability analysis
+│   └── PRE_FILTER_COMPARISON.md        # Pre-filter vs wideband topology trade-offs
 │
 └── renders/                            # High-resolution raster and vector design assets
     ├── enclosure_assembly_iso.png      # Isometric view of PCB in enclosure
@@ -307,31 +334,38 @@ All hardware artifacts can be re-synthesized and verified via automated CLI comm
 
 ### 1. Synthesize PCB Layout (KiCad `pcbnew` Python API)
 ```bash
+cd kicad
 & "D:\Programs\KiCad\bin\python.exe" build_clean_lna_pcb.py
 ```
 
 ### 2. Run DRC Checks
 ```bash
+cd kicad
 kicad-cli pcb drc --severity-all --output drc_report.json --format json lna_fm_98mhz.kicad_pcb
 ```
 
 ### 3. Generate 3D EM 4-Port Touchstone Model (openEMS)
 ```bash
+cd openems
 & "D:\Programs\FreeCAD\bin\python.exe" generate_lna_full_board_s4p.py
 ```
 
 ### 4. Execute QUCS Circuit Co-Simulation & Generate Plots
 ```bash
+cd qucs-sim
 & "D:\Programs\FreeCAD\bin\python.exe" run_full_board_cosim.py
+& "D:\Programs\FreeCAD\bin\python.exe" plot_full_board_cosim_results.py
 ```
 
 ### 5. Verify Stability Metrics
 ```bash
+cd qucs-sim
 & "D:\Programs\FreeCAD\bin\python.exe" verify_stability.py
 ```
 
 ### 6. Export Production Gerbers & Drills
 ```bash
+cd kicad
 # Export Gerbers
 kicad-cli pcb export gerbers -o gerbers/ --layers F.Cu,B.Cu,F.Mask,B.Mask,F.Silkscreen,B.Silkscreen,Edge.Cuts lna_fm_98mhz.kicad_pcb
 
@@ -341,6 +375,7 @@ kicad-cli pcb export drill -o gerbers/ --format excellon --excellon-zeros-format
 
 ### 7. Export 2D Mask Renders
 ```bash
+cd kicad
 & "D:\Programs\KiCad\bin\python.exe" render_masks.py
 ```
 

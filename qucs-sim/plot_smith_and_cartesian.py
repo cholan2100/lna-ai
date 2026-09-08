@@ -1,12 +1,15 @@
-﻿import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
 import os
 from parse_qucs import parse_qucs_dat
 import skrf as rf
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+repo_dir = os.path.dirname(script_dir)
+
 # 1. Load QUCS Final Co-Simulation Data
-dat_file = 'lna_fm_98mhz_full_board_cosim.dat'
+dat_file = os.path.join(script_dir, 'lna_fm_98mhz_full_board_cosim.dat')
 freqs_raw, data = parse_qucs_dat(dat_file)
 freqs = np.array(freqs_raw) / 1e6 # MHz
 s11 = np.array(data['S[1,1]'])
@@ -143,7 +146,7 @@ ax3.legend(loc='lower left', fontsize=10, framealpha=0.95)
 plt.suptitle('98 MHz FM Low-Noise Amplifier: Final QUCS Co-Simulation Results\nMultiport Simulation Using 4-Port Full-Board openEMS Touchstone Model (lna_board_full_4port.s4p)',
              fontsize=15, fontweight='bold', y=0.985)
 
-out_fig = 'renders/final_qucs_cosim_s_params_and_smith.png'
+out_fig = os.path.join(repo_dir, 'renders', 'final_qucs_cosim_s_params_and_smith.png')
 plt.savefig(out_fig, bbox_inches='tight', dpi=220)
 plt.close()
 print(f'Successfully created {out_fig}')

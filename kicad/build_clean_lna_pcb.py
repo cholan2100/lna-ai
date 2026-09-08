@@ -546,8 +546,10 @@ def build_pcb():
             rf.SetTextThickness(mm(sth))
             rf.SetLayer(pcbnew.F_SilkS)
 
-    pcbnew.SaveBoard(r'd:\Workspace\rf\lna-ai\lna_fm_98mhz.kicad_pcb', board)
-    print('Clean PCB successfully built and saved to lna_fm_98mhz.kicad_pcb!')
+    import os
+    out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'lna_fm_98mhz.kicad_pcb')
+    pcbnew.SaveBoard(out_path, board)
+    print(f'Clean PCB successfully built and saved to {out_path}!')
 
 if __name__ == '__main__':
     build_pcb()
