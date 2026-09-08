@@ -19,7 +19,7 @@
 > 2. **RF Circuit Co-Simulation (Qucsator RF)**: Wrote netlists connecting active MMBT5179 BJT models, matching networks, DC bias, and the 4-port 3D EM Touchstone block, achieving **+19.73 dB** gain and **-31.33 dB** input return loss (VSWR = 1.056:1) at 98.0 MHz.
 > 3. **Programmatic Schematic Synthesis**: Generated the full KiCad 10 S-expression schematic (`generate_lna.py`) with zero ERC errors.
 > 4. **Autonomous PCB Layout & 50 Ω CPWG Routing**: Programmed the board from scratch using KiCad's Python `pcbnew` API (`build_clean_lna_pcb.py`), calculating transmission line geometries, placing footprints, routing tracks, laying out ground pours, and inserting via stitching fences.
-> 5. **Enclosure Mechanical Fitting & Assembly**: Resized and shaped the board to 34.00 × 29.00 mm with R = 3.0 mm corner fillets and concentric M2 mounting holes to achieve 100% mechanical alignment with OpenSourceSDR Lab / H4M aluminum and 3D-printed cases (`h4m-keytop-24.step` base and `h4m-keytop-25.step` lid).
+> 5. **Enclosure Mechanical Fitting & Assembly**: Resized and shaped the board to 34.00 × 29.00 mm with R = 3.0 mm corner fillets and concentric M2 mounting holes to achieve 100% mechanical alignment with OpenSourceSDR Lab / H4M aluminum and 3D-printed cases (`h4m-keytop-24.step` base and `h4m-keytop-25.step` lid from Printables.com).
 > 6. **Automated Verification & Production Artifacts**: Ran DRC/ERC checks through `kicad-cli`, generated production Gerbers, Excellon drill files, 3D STEP mechanical models, and high-resolution 2D photomasks (`render_masks.py`).
 
 ---
@@ -29,16 +29,16 @@
 | Parameter | Specification | Achieved (3D EM + Circuit Co-Simulation) | Notes |
 | :--- | :--- | :--- | :--- |
 | **Center Frequency ($f_0$)** | 98.0 MHz | **98.0 MHz** | Centered in the FM broadcast band (88–108 MHz) |
-| **Forward Gain ($S_{21}$)** | $\ge 18	ext{ dB}$ | **+19.73 dB** | Peak gain centered directly at 98.0 MHz ($\pm 0.2	ext{ dB}$ flatness 96–100 MHz) |
-| **Input Return Loss ($S_{11}$)** | $\le -15	ext{ dB}$ | **-31.33 dB (VSWR 1.056:1)** | Near-perfect $50\ \Omega$ match ($Z_{	ext{in}} = 52.3 - j1.5\ \Omega$) |
-| **Reverse Isolation ($S_{12}$)**| $\le -20	ext{ dB}$ | **-29.65 dB** | Grounded-base configuration eliminates Miller feedback |
-| **Output Reflection ($S_{22}$)** | Resonant Tank | **-0.38 dB** | High-impedance open-collector resonant match ($Z_{	ext{out}} = 1.1 + j11.4\ \Omega$) |
+| **Forward Gain ($S_{21}$)** | $\ge 18\text{ dB}$ | **+19.73 dB** | Peak gain centered directly at 98.0 MHz ($\pm 0.2\text{ dB}$ flatness 96–100 MHz) |
+| **Input Return Loss ($S_{11}$)** | $\le -15\text{ dB}$ | **-31.33 dB (VSWR 1.056:1)** | Near-perfect $50\ \Omega$ match ($Z_{\text{in}} = 52.3 - j1.5\ \Omega$) |
+| **Reverse Isolation ($S_{12}$)**| $\le -20\text{ dB}$ | **-29.65 dB** | Grounded-base configuration eliminates Miller feedback |
+| **Output Reflection ($S_{22}$)** | Resonant Tank | **-0.38 dB** | High-impedance open-collector resonant match ($Z_{\text{out}} = 1.1 + j11.4\ \Omega$) |
 | **-3 dB Bandwidth** | 88.0 – 108.0 MHz | **14.0 MHz (92.0 – 106.0 MHz)** | Integrated LC bandpass pre-filter and tuned collector tank |
 | **Stability Criteria** | Stable across band | **$|\Delta| = 0.3210 < 1$, Unconditionally Stable into $50\ \Omega$** | No oscillation risk into standard $50\ \Omega$ load across 10–500 MHz |
-| **Physical Trace Losses** | Low-loss CPWG | **$0.130	ext{ dB}$ (In, 8.5 mm), $0.146	ext{ dB}$ (Out, 9.55 mm)** | 3D FDTD openEMS full-wave EM modeled |
-| **Board Cross-Talk Isolation** | $\ge 60	ext{ dB}$ | **-76.40 dB ($S_{31}$ / $S_{41}$)** | Ground via stitching fence between input and output CPWG |
-| **Operating Voltage** | 3.3 V – 6.0 V | **5.0 V Nominal** | $I_C pprox 7.5	ext{ mA}, V_{CE} pprox 3.5	ext{ V}$ |
-| **PCB Dimensions** | Compact Enclosure | **$34.00 	imes 29.00	ext{ mm}$ ($R = 3.0	ext{ mm}$ corner fillets)** | Fits OpenSourceSDR Lab / H4M case (`h4m-keytop-24.step` + `h4m-keytop-25.step`) |
+| **Physical Trace Losses** | Low-loss CPWG | **$0.130\text{ dB}$ (In, 8.5 mm), $0.146\text{ dB}$ (Out, 9.55 mm)** | 3D FDTD openEMS full-wave EM modeled |
+| **Board Cross-Talk Isolation** | $\ge 60\text{ dB}$ | **-76.40 dB ($S_{31}$ / $S_{41}$)** | Ground via stitching fence between input and output CPWG |
+| **Operating Voltage** | 3.3 V – 6.0 V | **5.0 V Nominal** | $I_C \approx 7.5\text{ mA}, V_{CE} \approx 3.5\text{ V}$ |
+| **PCB Dimensions** | Compact Enclosure | **$34.00 \times 29.00\text{ mm}$ ($R = 3.0\text{ mm}$ corner fillets)** | Fits OpenSourceSDR Lab / H4M case (`h4m-keytop-24.step` + `h4m-keytop-25.step`) |
 
 ---
 
@@ -61,7 +61,7 @@ The PCB is dimensioned to fit inside the standard **OpenSourceSDR Lab / H4M case
 
 <p align="center">
   <img src="renders/enclosure_assembly_rear_iso.png" alt="Enclosure Rear USB Power Cutout View" width="70%"><br>
-  <em>Figure 3: Rear isometric view showing the DC power header / USB-C cutout alignment ($X_{	ext{USB}} = 18.50	ext{ mm}$).</em>
+  <em>Figure 3: Rear isometric view showing the DC power header / USB-C cutout alignment ($X_{\text{USB}} = 18.50\text{ mm}$).</em>
 </p>
 
 ### 2. Bare PCB 3D Renders
@@ -152,13 +152,13 @@ RF OUT (50Ω) ◄── [CPWG 9.55mm] ◄── [L4 1µH Choke] ◄── [C7 10
 
 ### Key Circuit Innovations
 1. **Common-Base VHF Topology**:
-   - Eliminates Miller feedback capacitance ($C_{cb}$), delivering high reverse isolation ($S_{12} = -29.65	ext{ dB}$) and robust stability without lossy resistors in the RF path.
-   - Low intrinsic emitter resistance ($R_{	ext{in}} pprox 1/g_m pprox 3.5\ \Omega$) is matched to $50\ \Omega$ through a merged parallel shunt tank ($L_1 = 22	ext{ nH} \parallel C_2 = 27	ext{ pF}$) and series capacitor ($C_1 = 91	ext{ pF}$).
+   - Eliminates Miller feedback capacitance ($C_{cb}$), delivering high reverse isolation ($S_{12} = -29.65\text{ dB}$) and robust stability without lossy resistors in the RF path.
+   - Low intrinsic emitter resistance ($R_{\text{in}} \approx 1/g_m \approx 3.5\ \Omega$) is matched to $50\ \Omega$ through a merged parallel shunt tank ($L_1 = 22\text{ nH} \parallel C_2 = 27\text{ pF}$) and series capacitor ($C_1 = 91\text{ pF}$).
 2. **50 $\Omega$ Coplanar Waveguide with Ground (CPWG)**:
-   - Geometry: Trace width $W = 1.50	ext{ mm}$, clearance gap $S = 0.35	ext{ mm}$ on 1.6 mm FR-4 ($arepsilon_r = 4.5$).
-   - Top ground plane is stitched to solid bottom ground through via fences spaced $\le 4.0	ext{ mm}$ apart ($\ll \lambda/20$), ensuring continuous ground return and suppressing parallel-plate modes.
+   - Geometry: Trace width $W = 1.50\text{ mm}$, clearance gap $S = 0.35\text{ mm}$ on 1.6 mm FR-4 ($\varepsilon_r = 4.5$).
+   - Top ground plane is stitched to solid bottom ground through via fences spaced $\le 4.0\text{ mm}$ apart ($\ll \lambda/20$), ensuring continuous ground return and suppressing parallel-plate modes.
 3. **Dual Power Supply (Bias-Tee or Local DC/Battery)**:
-   - **Bias-Tee Mode**: Power injected via output coaxial cable. RF choke $L_4$ ($1.0\ \mu	ext{H}$) isolates RF, and $C_7$ ($10	ext{ pF}$) blocks DC from the amplifier core.
+   - **Bias-Tee Mode**: Power injected via output coaxial cable. RF choke $L_4$ ($1.0\ \mu\text{H}$) isolates RF, and $C_7$ ($10\text{ pF}$) blocks DC from the amplifier core.
    - **Local Header Mode**: 2-pin 2.54mm header / solder pads with BAT54 Schottky reverse-polarity diode ($D_1$) and green power LED ($D_3$).
    - **Solder Jumper $JP_1$**: Completely disconnects Bias-Tee DC trace when local battery power is used, preventing unintended back-feeding.
 
@@ -182,15 +182,24 @@ The repository includes both native STEP CAD files and 3D printing STL files for
 | [`lna_fm_98mhz_assembly.stl`](lna_fm_98mhz_assembly.stl) | STL | 3D printable mesh of complete PCB assembly |
 | [`lna_fm_98mhz_pcb_no_connectors.step`](lna_fm_98mhz_pcb_no_connectors.step) | STEP | Bare board with components (no connectors) for physical test-fitting |
 | [`lna_fm_98mhz_pcb_no_connectors.stl`](lna_fm_98mhz_pcb_no_connectors.stl) | STL | 3D printable mesh of bare board with components |
-| [`lna_fm_98mhz_bare_board.stl`](lna_fm_98mhz_bare_board.stl) | STL | Bare FR-4 substrate outline ($34 	imes 29	ext{ mm}, R = 3	ext{ mm}$) |
+| [`lna_fm_98mhz_bare_board.stl`](lna_fm_98mhz_bare_board.stl) | STL | Bare FR-4 substrate outline ($34 \times 29\text{ mm}, R = 3\text{ mm}$) |
 
 ### Mechanical Tolerances & Mounting
-- **Board Outline**: $34.00	ext{ mm} 	imes 29.00	ext{ mm}$ ($R = 3.0	ext{ mm}$ corner radius).
-- **Case Cavity**: $35.40	ext{ mm} 	imes 30.40	ext{ mm}$ (provides $0.70	ext{ mm}$ expansion margin on all sides).
-- **Mounting Screws**: 4 × M2 pan-head self-tapping or machine screws ($2.2	ext{ mm}$ hole, $4.0	ext{ mm}$ pad).
-- **Standoff Centers**: Located at $(3.0, 3.0), (31.0, 3.0), (3.0, 26.0), (31.0, 26.0)	ext{ mm}$.
-- **RF Centerline**: $Y_{	ext{RF}} = 17.00	ext{ mm}$ (perfect center-cut alignment for edge-mount SMA connectors).
-- **Power Port**: $X_{	ext{USB}} = 18.50	ext{ mm}, Y_{	ext{USB}} = 26.50	ext{ mm}$ (aligns directly with the rear case cutout).
+- **Board Outline**: $34.00\text{ mm} \times 29.00\text{ mm}$ ($R = 3.0\text{ mm}$ corner radius).
+- **Case Cavity**: $35.40\text{ mm} \times 30.40\text{ mm}$ (provides $0.70\text{ mm}$ expansion margin on all sides).
+- **Mounting Screws**: 4 × M2 pan-head self-tapping or machine screws ($2.2\text{ mm}$ hole, $4.0\text{ mm}$ pad).
+- **Standoff Centers**: Located at $(3.0, 3.0), (31.0, 3.0), (3.0, 26.0), (31.0, 26.0)\text{ mm}$.
+- **RF Centerline**: $Y_{\text{RF}} = 17.00\text{ mm}$ (perfect center-cut alignment for edge-mount SMA connectors).
+- **Power Port**: $X_{\text{USB}} = 18.50\text{ mm}, Y_{\text{USB}} = 26.50\text{ mm}$ (aligns directly with the rear case cutout).
+
+### Enclosure Attribution & Credits
+> **3D Enclosure Design Credits**:
+> The 3D CAD models for the enclosure base and lid (`h4m-keytop-24.step` and `h4m-keytop-25.step`) are designed by **pop aruaru** and published on [Printables.com](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case):
+> - **Platform**: [Printables.com by Prusa](https://www.printables.com/)
+> - **Model**: [OpenSourceSDR Lab AMP case by pop aruaru](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case)
+> - **Creator**: **pop aruaru** ([Printables Profile](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case))
+>
+> Full credit and sincere thanks go to **pop aruaru** and the **Printables.com** maker community for providing the original mechanical CAD enclosure design. The PCB outline ($34.00 \times 29.00\text{ mm}$, $R = 3.0\text{ mm}$ fillets), M2 mounting standoff coordinates, edge-mount SMA connector cutouts, and DC power header coordinates in this project were specifically dimensioned and aligned to guarantee seamless, drop-in compatibility with this case.
 
 ---
 
@@ -207,8 +216,8 @@ lna-ai/
 ├── lna_fm_98mhz.kicad_pcb              # KiCad PCB layout (34x29mm, 50Ω CPWG, DRC clean)
 ├── lna_fm_98mhz.step                   # Default 3D mechanical STEP export
 │
-├── h4m-keytop-24.step                  # Enclosure Base Case (STEP)
-├── h4m-keytop-25.step                  # Enclosure Top Lid (STEP)
+├── h4m-keytop-24.step                  # Enclosure Base Case (STEP) - Credits: pop aruaru on Printables.com
+├── h4m-keytop-25.step                  # Enclosure Top Lid (STEP)  - Credits: pop aruaru on Printables.com
 ├── h4m_case.stl                        # Enclosure Base Case (STL mesh)
 ├── h4m_lid.stl                         # Enclosure Top Lid (STL mesh)
 ├── lna_fm_98mhz_in_enclosure.step      # Combined Assembly: Case + PCB (open top)
@@ -337,7 +346,7 @@ kicad-cli pcb export drill -o gerbers/ --format excellon --excellon-zeros-format
 
 | Ref | Value | Footprint | Description | Recommended Part |
 | :--- | :--- | :--- | :--- | :--- |
-| **Q1** | MMBT5179 | SOT-23-3 | VHF/UHF NPN RF BJT ($f_T = 1.4	ext{ GHz}$) | ON Semi / Central Semi MMBT5179 |
+| **Q1** | MMBT5179 | SOT-23-3 | VHF/UHF NPN RF BJT ($f_T = 1.4\text{ GHz}$) | ON Semi / Central Semi MMBT5179 |
 | **L1** | 22 nH | 0603 SMD | RF Input shunt tank inductor (High-Q wirewound) | Murata LQW18AN22NG00D |
 | **C2** | 27 pF | 0603 SMD | RF Input shunt tank capacitor (Pre-filter C0G) | KEMET C0603C270J5GACTU |
 | **C1** | 91 pF | 0805 SMD | Input series match & DC block capacitor (C0G) | KEMET C0805C910J5GACTU |
@@ -347,7 +356,7 @@ kicad-cli pcb export drill -o gerbers/ --format excellon --excellon-zeros-format
 | **C3** | 100 pF | 0805 SMD | Base VHF RF decoupling bypass capacitor | KEMET C0805C101J5GACTU |
 | **C4** | 1.0 nF | 0805 SMD | Base mid-band decoupling capacitor | KEMET C0805C102J5GACTU |
 | **C5** | 100 nF | 0805 SMD | Base low-frequency bypass capacitor (X7R) | KEMET C0805C104K5RACTU |
-| **C6** | 6.8 pF | 0805 SMD | Collector resonant tank capacitor (C0G, $\pm 0.25	ext{ pF}$) | KEMET C0805C689C5GACTU |
+| **C6** | 6.8 pF | 0805 SMD | Collector resonant tank capacitor (C0G, $\pm 0.25\text{ pF}$) | KEMET C0805C689C5GACTU |
 | **C7** | 10 pF | 0805 SMD | Output series coupling capacitor (C0G) | KEMET C0805C100J5GACTU |
 | **C9** | 100 pF | 0805 SMD | Bias-Tee RF decoupling capacitor | KEMET C0805C101J5GACTU |
 | **C10**| 10 nF | 0805 SMD | Bias-Tee mid-band decoupling capacitor | KEMET C0805C103K5RACTU |
@@ -369,9 +378,9 @@ kicad-cli pcb export drill -o gerbers/ --format excellon --excellon-zeros-format
 
 ## PCB Fabrication Requirements
 
-- **Dimensions**: $34.00	ext{ mm} 	imes 29.00	ext{ mm}$ ($R = 3.0	ext{ mm}$ rounded corner fillets)
+- **Dimensions**: $34.00\text{ mm} \times 29.00\text{ mm}$ ($R = 3.0\text{ mm}$ rounded corner fillets)
 - **Layer Count**: 2 Layers
-- **Substrate Material**: Standard FR-4 ($arepsilon_r = 4.5$, $	an \delta = 0.02$)
+- **Substrate Material**: Standard FR-4 ($\varepsilon_r = 4.5$, $\tan \delta = 0.02$)
 - **Finished Board Thickness**: 1.6 mm
 - **Outer Copper Weight**: 1 oz (35 $\mu$m finished)
 - **Surface Finish**: ENIG (Electroless Nickel Immersion Gold) recommended for coplanar microwave stability; HASL-LeadFree acceptable.
@@ -380,6 +389,15 @@ kicad-cli pcb export drill -o gerbers/ --format excellon --excellon-zeros-format
 - **Minimum Trace Width**: 0.35 mm (13.8 mil)
 - **Minimum Clearance**: 0.35 mm (13.8 mil)
 - **Minimum Drill Hole**: 0.4 mm (vias), 2.2 mm (M2 mounting holes)
+
+---
+
+## Acknowledgments & Credits
+
+- **Enclosure 3D Design**: Sincere credit and thanks to creator **pop aruaru** on [Printables.com](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case) for the original *[OpenSourceSDR Lab AMP case](https://www.printables.com/model/1238229-opensourcesdr-lab-amp-case)* CAD models (`h4m-keytop-24.step` and `h4m-keytop-25.step`).
+- **Printables.com**: Thanks to the [Printables.com](https://www.printables.com/) community by Prusa for open hardware and 3D printing design sharing.
+- **openEMS & FreeCAD**: Thanks to Thorsten Liebig and the openEMS / FreeCAD Microwave Workbench developers for the open-source 3D FDTD EM simulation suite.
+- **Qucs-S**: Thanks to Vadim Kuznetsov and the Qucs-S development team for the RF circuit simulation platform and Qucsator solver.
 
 ---
 
