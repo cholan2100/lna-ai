@@ -23,3 +23,6 @@ venv/
 *.swp
 # openEMS simulation run
 em_simulation_run/
+em_run_*/
+em_solve_*/
+tmp_*/

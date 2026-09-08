@@ -1,0 +1,36 @@
+<Qucs Schematic 26.1.1>
+<Properties>
+  <View=60,-411,1141,192,2.04718,0,0>
+  <Grid=10,10,1>
+  <DataSet=lna_fm_98mhz_full_board_cosim.dat>
+  <DataDisplay=lna_fm_98mhz_full_board_cosim.dpl>
+  <OpenDisplay=1>
+  <Script=>
+  <RunScript=0>
+  <showFrame=0>
+  <FrameText0=Title>
+  <FrameText1=Drawn By:>
+  <FrameText2=Date:>
+  <FrameText3=Revision:>
+</Properties>
+<Symbol>
+</Symbol>
+<Components>
+</Components>
+<Wires>
+</Wires>
+<Diagrams>
+  <Rect 100 80 550 380 3 #c0c0c0 1 00 1 1e+07 5e+07 5e+08 0 -45 10 25 1 -1 0.5 1 315 0 225 1 0 0 "Frequency [Hz]" "S-Parameters [dB]" "">
+	<"dB(S[2,1])" #ff0000 0 3 0 0 0>
+	<"dB(S[1,1])" #0000ff 0 3 0 0 0>
+	<"dB(S[1,2])" #00aa00 0 2 0 0 0>
+	<"dB(S[2,2])" #aa00aa 0 2 0 0 0>
+  </Rect>
+  <Smith 720 80 380 380 3 #c0c0c0 1 00 1 0 1 1 0 0 4 1 1 0 1 1 315 0 225 1 0 0 "" "" "">
+	<"S[1,1]" #0000ff 2 3 0 0 0>
+	<"S[2,2]" #ff0000 2 3 0 0 0>
+  </Smith>
+</Diagrams>
+<Paintings>
+  <Text 100 20 14 #000000 0 "98 MHz FM LNA - Full-Board 4-Port 3D EM Co-Simulation (openEMS + QUCS)">
+</Paintings>

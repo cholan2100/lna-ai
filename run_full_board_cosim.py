@@ -1,0 +1,70 @@
+﻿import subprocess, os
+
+netlist_content = """# Qucs Netlist for 98 MHz Common Base LNA with Full-Board 4-Port 3D EM Co-Simulation
+SUBST:Subst1 er=4.5 h=1.6mm t=35um tand=0.02 rho=1.72e-8 D=1.5e-6
+
+# RF Ports (50 Ohm)
+Pac:P1 rf_in gnd Num=1 Z=50 Ohm f=98 MHz
+Pac:P2 rf_out gnd Num=2 Z=50 Ohm f=98 MHz
+
+# Full-Board 4-Port 3D EM Model from openEMS
+SPfile:PCB_FULL rf_in in_match out_match rf_out gnd File="lna_board_full_4port.s4p" Data="rectangular" Interpolator="linear" duringDC="open"
+
+# Input BPF & Matching Network: Shunt LC Tank (L1 || C2 to GND) + Series C1 to Emitter
+L:L1 in_match gnd L=22n
+C:C2 in_match gnd C=27p
+C:C1 in_match emitter C=91p
+
+# Transistor Q1 MMBT5179 (Base, Collector, Emitter, Substrate)
+BJT:Q1 base collector emitter gnd Is=1e-14 Nf=1 Nr=1 Ikf=0.1 Ikr=0.01 Vaf=50 Var=10 Ise=1e-14 Ne=1.5 Isc=0 Nc=2 Bf=90 Br=2 Rbm=0 Irb=0 Cje=1.2e-12 Vje=0.7 Mje=0.33 Cjc=1e-12 Vjc=0.5 Mjc=0.33 Xcjc=1 Cjs=0 Vjs=0.75 Mjs=0 Fc=0.5 Vtf=0 Tf=0.09e-9 Xtf=0 Itf=0 Tr=10e-9 Rb=10 Re=1 Rc=5 Type="npn"
+
+# Emitter Bias & RF Choke
+L:L2 emitter n_l2_2 L=470n
+R:R3 n_l2_2 gnd R=200
+
+# Base Bias & RF Grounding Bypass
+Vdc:VCC vcc gnd U=5V
+R:R1 vcc base R=3.9k
+R:R2 base gnd R=3.3k
+C:C3 base gnd C=100p
+C:C4 base gnd C=1n
+C:C5 base gnd C=100n
+
+# VCC Power Decoupling
+C:C11 vcc gnd C=10u
+C:C12 vcc gnd C=100n
+
+# Collector CPWG interconnect trace to tuned tank & C7 (Length = 3.0 mm)
+CLIN:TL_COL collector n_c7_in Subst="Subst1" W=1.5mm S=0.35mm L=3.0mm Backside="Metal"
+
+# Collector Tuned Tank (BPF Image Filter)
+L:L3 n_c7_in vcc L=150n
+C:C6 n_c7_in gnd C=6.8p
+C:C7 n_c7_in out_match C=10p
+
+# Bias Tee RF Choke & DC Decoupling at SMA Out
+L:L4 rf_out n_l4_dc L=1u
+C:C9 n_l4_dc gnd C=100p
+C:C10 n_l4_dc gnd C=10n
+R:R_BT_DUMMY n_l4_dc gnd R=100k
+
+# Simulation Controls
+.DC:DC1
+.SP:SP1 Type=lin Start=10 MHz Stop=500 MHz Points=491
+"""
+
+net_file = "lna_fm_98mhz_full_board_cosim.net"
+dat_file = "lna_fm_98mhz_full_board_cosim.dat"
+
+with open(net_file, "w", newline="\n") as f:
+    f.write(netlist_content)
+
+qucsator = r"D:\Programs\Qucs-S\bin\qucsator_rf.exe"
+print(f"Running qucsator on {net_file}...")
+res = subprocess.run([qucsator, "-i", net_file, "-o", dat_file], capture_output=True, text=True)
+print("Return code:", res.returncode)
+print("STDOUT:\n", res.stdout)
+if res.stderr:
+    print("STDERR:\n", res.stderr)
+if os.path.exists(dat_file):
+    print(f"SUCCESS: {dat_file} created successfully! Size: {os.path.getsize(dat_file)} bytes")
